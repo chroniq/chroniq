@@ -1,6 +1,6 @@
 {
 	"name": "@chroniq/chroniq-accessor-helpers",
-	"version": "0.0.1",
+	"version": "0.0.0",
 	"description": "storybook for chroniq",
 	"author": "Christian Birg <cbirg@incoqnito.de>",
 	"contributors": [
