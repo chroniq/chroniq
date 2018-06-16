@@ -51,6 +51,6 @@
 	},
 	"dependencies": {
 		"@chroniq/chroniq": "^0.0.1",
-		"@chroniq/chroniq-accessor-helpers": "0.0.1"
+		"@chroniq/chroniq-accessor-helpers": "^0.0.1"
 	}
 }
