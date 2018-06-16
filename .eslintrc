@@ -1,0 +1,17 @@
+{
+  "extends": [
+    "standard",
+    "standard-react",
+    "standard-flow"
+  ],
+  "plugins": [
+    "react",
+    "flowtype",
+    "class-property",
+    "jest"
+  ],
+  "parser": "babel-eslint",
+  "env": {
+    "jest/globals": true
+    }
+}

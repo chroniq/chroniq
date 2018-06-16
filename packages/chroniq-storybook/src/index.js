@@ -1,0 +1,16 @@
+import 'babel-polyfill'
+import './index.styl'
+
+import './stories/default-calendar'
+import './stories/ressource-calendar'
+import './stories/drag-and-drop'
+import './stories/background-events'
+import './stories/business-hours'
+import './stories/localization'
+import './stories/custom-components'
+import './stories/layout-strategies'
+import './stories/controllable'
+import './stories/accessors'
+import './stories/use-cases'
+
+import '@chroniq/chroniq/lib/index.styl'

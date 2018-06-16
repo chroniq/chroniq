@@ -1,0 +1,133 @@
+.chrnq-selection {
+  z-index: 10;
+  position: absolute;
+  cursor: default;
+  background-color: rgba(0,0,0,0.1);
+  color: #000;
+  font-size: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: sans-serif;
+  padding: 3px;
+  width: 100%;
+  user-select none;
+}
+
+.chrnq-time-view {
+  display: flex;
+  flex-direction: column;
+  flex: 0 1 auto;
+  width: 100%;
+  border: 0;
+  .chrnq-time-gutter {
+    white-space: nowrap;
+
+    > * {
+      border-left: 0;
+    }
+  }
+
+  .chrnq-allday-cell {
+    width: 100%;
+    position: relative;
+    border-left: 1px solid rgba(0,0,0, 0.2);
+  }
+
+  .chrnq-allday-events {
+    position: relative;
+    z-index: 4;
+  }
+
+  .chrnq-row {
+    min-height: 20px;
+  }
+
+  .chrnq-header {
+    padding: 8px 12px;
+    font-size: 12px;
+    color: #555;
+    background: #f1f1f1;
+    text-align: left;
+    font-weight: 300;
+    font-family: sans-serif;
+  }
+}
+
+
+.chrnq-time-header {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+
+  .chrnq-rtl &.chrnq-overflowing {
+    border-right-width: 0;
+  }
+
+  .chrnq-rtl & > .chrnq-row > * + * {
+    border-left-width: 0;
+    border-right: 1px solid rgba(0,0,0, 0.2);
+  }
+
+  .chrnq-gutter-cell {
+    flex: none;
+  }
+
+  > .chrnq-gutter-cell + * {
+    width: 100%;
+  }
+}
+
+.chrnq-time-content {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: flex-start;
+  width: 100%;
+  border-top: 1px solid rgba(0,0,0, 0.2);
+  overflow: auto;
+  position: relative;
+
+  > .chrnq-time-gutter {
+    flex: none;
+  }
+
+  &::-webkit-scrollbar {
+    display: none;
+  };
+
+  > .chrnq-day-slot {
+    width: 100%;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+}
+
+.chrnq-current-time-indicator {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  height: 1px;
+  background-color: #446cb3;
+  pointer-events: none;
+
+  &::before {
+    display: block;
+
+    position: absolute;
+    left: -3px;
+    top: -3px;
+
+    content: ' ';
+    background-color: #446cb3;
+
+    border-radius: 50%;
+    width: 8px;
+    height: 8px;
+  }
+
+  .chrnq-rtl &::before {
+    left: 0;
+    right: -3px;
+  }
+}

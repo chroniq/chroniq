@@ -1,0 +1,73 @@
+
+.chrnq-daypicker-wrapper {
+  background-color: white;
+  border-radius: 2px;
+  user-select: none;
+}
+
+.chrnq-daypicker-table {
+  border-collapse: collapse;
+
+  thead th {
+    padding: 8px 12px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #555;
+    background: #f8f8f8;
+    text-align: left;
+    font-weight: 300;
+    font-family: sans-serif;
+    border-bottom: 1px solid #ddd;
+  }
+
+  tbody {
+    cursor: pointer;
+  }
+
+  td:hover {
+    color: #446CB3;
+    font-weight: 400;
+    background: #f8f8f8;
+    &.--is-out-of-range {
+      color: #777;
+      font-weight: 300;
+      background: #efefef;
+    }
+  }
+  
+  tbody tr:last-child td {
+    border-bottom: 0;
+  }
+  tbody tr td:last-child {
+    border-right: none;
+  }
+  tbody td {
+    position: relative;
+    text-align: center;
+    color: black;
+    font-size: 12px;
+    line-height: 1.5;
+    font-weight: 300;
+    height: 40px;
+    width: 40px;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+
+    span {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      font-size: 10px
+    }
+
+    &.--is-today {
+      color: #446CB3;
+      font-weight: 400;
+    }
+
+    &.--is-out-of-range {
+      color: #777;
+      background: #efefef;
+    }
+  }
+}

@@ -1,0 +1,107 @@
+
+.chrnq-weekpicker-wrapper {
+	background-color: white;
+	border-radius: 2px;
+	user-select: none;
+}
+
+.chrnq-date-selector {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.chrnq-date-selector-date {
+	position: relative;
+	display: inline-block;
+	font-weight: 300;
+	text-align: left;
+	line-height: 38px;
+	font-size: 20px;
+	vertical-align: middle;
+	flex: 1 0 auto;
+	padding: 8px 12px;
+}
+
+.chrnq-date-selector-arrow {
+	padding: 0px;
+	cursor: pointer;
+	margin-top: 2px;
+	svg {
+		width: 15px;
+		height: 15px;
+		fill: black;
+	}
+	flex: 0 0 40px;
+	text-align: center;
+}
+
+
+
+.chrnq-weekpicker-table {
+	border-collapse: collapse;
+
+	thead th {
+		padding: 8px 12px;
+		font-size: 12px;
+		line-height: 1.5;
+		color: #555;
+		background: #f8f8f8;
+		text-align: left;
+		font-weight: 300;
+		font-family: sans-serif;
+		border-bottom: 1px solid #ddd;
+	}
+
+	tbody {
+		cursor: pointer;
+	}
+
+	tbody tr:hover {
+		td {
+			color: #446CB3;
+			font-weight: 400;
+			background: #f8f8f8;
+		}
+		td.--is-out-of-range {
+			color: #777;
+			font-weight: 300;
+			background: #efefef;
+		}
+	}
+	tbody tr:last-child td {
+		border-bottom: 0;
+	}
+	tbody tr td:last-child {
+		border-right: none;
+	}
+	tbody td {
+		position: relative;
+		text-align: center;
+		color: black;
+		font-size: 12px;
+		line-height: 1.5;
+		font-weight: 300;
+		height: 40px;
+		width: 40px;
+		border-right: 1px solid #ddd;
+		border-bottom: 1px solid #ddd;
+
+		span {
+			position: absolute;
+			top: 4px;
+			right: 4px;
+			font-size: 10px
+		}
+
+		&.--is-today {
+			color: #446CB3;
+			font-weight: 400;
+		}
+
+		&.--is-out-of-range {
+			color: #777;
+			background: #efefef;
+		}
+	}
+}

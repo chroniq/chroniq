@@ -1,0 +1,51 @@
+  .chrnq-dnd {
+    .chrnq-row-content {
+      pointer-events: none;
+
+      .chrnq-date-cell > a {
+        pointer-events: all;
+      }
+    }
+
+    &:not(.chrnq-dnd-is-dragging) {
+      & .chrnq-show-more,
+      & .chrnq-background-event-clickable,
+      & .chrnq-event {
+        pointer-events: all;
+      }
+    }
+
+    &.chrnq-dnd-is-dragging {
+      & .chrnq-show-more,
+      & .chrnq-background-event-clickable,
+      & .chrnq-event {
+        pointer-events: none;
+      }
+
+      & .chrnq-event.chrnq-dnd-drag-start {
+        pointer-events: all;
+      }
+    }
+
+    .chrnq-dnd-over {
+      color: green;
+      background-color: rgba(0,0,0, 0.05);
+    }
+
+    .chrnq-dnd-cant-drop {
+      background-color: rgba(255, 0, 0, 0.2);
+    }
+
+    .chrnq-event {
+      transition: opacity 150ms;
+      pointer-events: all;
+    }
+
+    &.chrnq-dnd-is-dragging .chrnq-background-event-clickable {
+      pointer-events: none;
+    }
+
+    &.chrnq-dnd-is-dragging .chrnq-event {
+      opacity: .50;
+    }
+  }

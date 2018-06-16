@@ -1,0 +1,23 @@
+.chrnq-background-event-container {
+  width: 0;
+  height: 0;
+}
+
+.chrnq-background-event-wrapper {
+  position: absolute;
+  z-index: -2;
+}
+
+.chrnq-background-event {
+  height: 100%;
+  width: 100%;
+  &.--is-deactivated {
+    filter: grayscale(100%);
+  }
+}
+
+.chrnq-background-event-clickable {
+  position: absolute;
+  z-index: 1;
+  cursor: pointer;
+}

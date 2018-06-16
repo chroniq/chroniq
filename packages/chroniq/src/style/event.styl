@@ -1,0 +1,121 @@
+.chrnq-event-container {
+  width: 0;
+  height: 0;  
+}
+
+.chrnq-event {
+  position: relative;
+
+  cursor: pointer;
+  padding: 0px;
+  font-size: 12px;
+  font-family: sans-serif;
+  color: black;
+  border: 0;
+
+  &.chrnq-selected {
+    background-color: transparent;
+    box-shadow: 2px 2px 4px 0px rgba(0,0,0, 0.4);
+  }
+
+  &.--is-deactivated {
+    filter: grayscale(100%);
+  }
+}
+
+.chrnq-event-overlaps {
+  box-shadow: -1px 1px 5px 0px rgba(51,51,51,.5);
+}
+
+.chrnq-event-continues-prior {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.chrnq-event-continues-after {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+
+.chrnq-event-continues-earlier {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+.chrnq-event-continues-later {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.chrnq-event-continues-day-after {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.chrnq-event-continues-day-prior {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.chrnq-event-overlay {
+  position: absolute;
+
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  z-index: 1;
+}
+
+.chrnq-event-resize {
+  position: absolute;
+
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1; /* prevents dnd from rendering the last 4px as drag preview */
+
+  height: 4px;
+  cursor: row-resize;
+}
+
+.chrnq-event-resize-month {
+  position: absolute;
+
+  right: 0;
+  bottom: 0;
+  top: 0;
+  z-index: 1; /* prevents dnd from rendering the last 4px as drag preview */
+
+  width: 4px;
+  cursor: col-resize;
+}
+
+.chrnq-day-event {
+  color: white;
+  font-size: 10px;
+  font-weight: 300;
+  border-style: solid;
+  border-width: 1px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 2px 2px;
+  border-radius: 1px;
+
+  span {
+    text-overflow: clip;
+    overflow: hidden;
+    white-space: nowrap;
+    line-height: 1.15
+  }
+  .chrnq-day-event-title {
+    font-weight: 400;
+    padding-bottom: 2px;
+    flex: 0 0 auto;
+  }
+  .chrnq-day-event-title {
+    font-size: 10px;
+  }
+}
