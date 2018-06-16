@@ -43,7 +43,7 @@
 		"webpack-dev-server": "^2.4.5"
 	},
 	"scripts": {
-		"publish": "lerna run prepublish && lerna publish",
+		"publish": "lerna run prepublish && lerna publish --access public",
 		"storybook:deploy": "storybook-to-ghpages",
 		"storybook": "start-storybook -p 9002 -c .storybook"
 	},
