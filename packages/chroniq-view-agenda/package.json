@@ -1,6 +1,6 @@
 {
 	"name": "@chroniq/chroniq-view-agenda",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"description": "storybook for chroniq",
 	"author": "Christian Birg <cbirg@incoqnito.de>",
 	"contributors": [
@@ -53,7 +53,7 @@
 		"stylus": "^0.54.5"
 	},
 	"dependencies": {
-		"@chroniq/chroniq": "^0.0.1",
-		"@chroniq/chroniq-accessor-helpers": "^0.0.1"
+		"@chroniq/chroniq": "^0.0.2",
+		"@chroniq/chroniq-accessor-helpers": "^0.0.2"
 	}
 }
