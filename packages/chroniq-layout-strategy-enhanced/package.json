@@ -1,6 +1,6 @@
 {
 	"name": "@chroniq/chroniq-layout-strategy-enhanced",
-	"version": "0.0.2",
+	"version": "0.0.0",
 	"description": "storybook for chroniq",
 	"author": "Christian Birg <cbirg@incoqnito.de>",
 	"contributors": [
@@ -34,6 +34,9 @@
 		"development": "rimraf lib &&  babel src -w --out-dir lib",
 		"build": "rimraf lib && babel src --out-dir lib",
 		"prepublish": "npm run build"
+	},
+	"publishConfig": {
+		"access": "public"
 	},
 	"devDependencies": {
 		"babel-cli": "^6.7.5",

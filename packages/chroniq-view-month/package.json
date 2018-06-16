@@ -1,6 +1,6 @@
 {
 	"name": "@chroniq/chroniq-view-month",
-	"version": "0.0.2",
+	"version": "0.0.0",
 	"description": "storybook for chroniq",
 	"author": "Christian Birg <cbirg@incoqnito.de>",
 	"contributors": [
@@ -48,6 +48,9 @@
 		"babel-preset-react": "^6.24.1",
 		"rimraf": "^2.6.2",
 		"stylus": "^0.54.5"
+	},
+	"publishConfig": {
+		"access": "public"
 	},
 	"dependencies": {
 		"@chroniq/chroniq": "^0.0.2",

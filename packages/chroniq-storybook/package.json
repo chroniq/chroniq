@@ -1,6 +1,6 @@
 {
 	"name": "@chroniq/chroniq-storybook",
-	"version": "0.0.2",
+	"version": "0.0.0",
 	"description": "storybook for chroniq",
 	"author": "Christian Birg <cbirg@incoqnito.de>",
 	"contributors": [
@@ -30,6 +30,9 @@
 		"drop",
 		"drag and drop"
 	],
+	"publishConfig": {
+		"access": "public"
+	},
 	"peerDependencies": {
 		"react": "^15.3.0 || ^16.0.0",
 		"react-dom": "^15.3.0 || ^16.0.0"

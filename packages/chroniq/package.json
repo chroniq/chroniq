@@ -1,6 +1,6 @@
 {
   "name": "@chroniq/chroniq",
-  "version": "0.0.2",
+  "version": "0.0.0",
   "description": "A ressource management calendar",
   "author": "Christian Birg <cbirg@incoqnito.de>",
   "contributors": [
@@ -34,6 +34,9 @@
     "development": "rimraf lib && babel src -w --out-dir lib && stylus src/index.styl --out lib",
     "build": "rimraf lib && babel src --out-dir lib && stylus src/index.styl --out lib",
     "prepublish": "npm run build"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "peerDependencies": {
     "react": "^15.3.0 || ^16.0.0",
