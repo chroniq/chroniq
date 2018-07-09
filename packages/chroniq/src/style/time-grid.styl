@@ -12,6 +12,7 @@
   font-family: sans-serif;
   padding: 3px;
   width: 100%;
+  height: 100%;
   user-select none;
 }
 
@@ -85,16 +86,29 @@
   align-items: flex-start;
   width: 100%;
   border-top: 1px solid rgba(0,0,0, 0.2);
-  overflow: auto;
   position: relative;
 
   > .chrnq-time-gutter {
     flex: none;
   }
 
+  overflow: hidden;
+  overflow-y: overlay;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
   &::-webkit-scrollbar {
-    display: none;
-  };
+      -webkit-appearance: none;
+      width: 8px;
+      background: transparent;
+  }
+
+  &::-webkit-scrollbar-track {
+      display: none;
+  }
+
+  &::-webkit-scrollbar-thumb {
+      border-radius: 0px;
+      background-color: rgba(0,0,0,.2);
+  }
 
   > .chrnq-day-slot {
     width: 100%;

@@ -388,7 +388,7 @@ class Calendar extends React.PureComponent {
           }
           <div style={{
             display: 'flex',
-            flex: 1,
+            flex: '0 1 100%',
             overflowY: 'hidden'
           }}>
             <MainView

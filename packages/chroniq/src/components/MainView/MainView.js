@@ -70,11 +70,7 @@ class MainView extends React.PureComponent {
       : []
 
     return (
-      <div style={{
-        display: 'flex',
-        flex: 1,
-        overflowY: 'hidden'
-      }}>
+      <div className='chrnq-resource-sheet-area'>
         {
           View.allowResources
             ? allJoinedResources
