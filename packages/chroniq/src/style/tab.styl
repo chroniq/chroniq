@@ -7,9 +7,10 @@
 .chrnq-resource-sheet-area {
   display: flex;
   flex: 1 1 auto;
+  overflow: auto;
   overflow: overlay;
   overflow-y: hidden;
-  -ms-overflow-style: scrollbar;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
 
   &::-webkit-scrollbar {
     -webkit-appearance: none;
