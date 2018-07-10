@@ -25,7 +25,8 @@ import {
 import { makeCanDrop } from '../../selectors/highlightEvents'
 
 import {
-  onSelectEvent, onDoubleClickEvent, onSelectBackgroundEvent, onEventDrag, onEventResizing
+  onSelectEvent, onDoubleClickEvent, onSelectBackgroundEvent, onEventDrag,
+  onEventResizing, setDragItemOverCalendar
 } from '../../store/actions'
 
 import SmartComponent from '@incoqnito.io/smart-component'
@@ -35,6 +36,17 @@ const checkFlatEquality = (a, b) => Object.keys(a).reduce((result, key) => a[key
 class DayColumn extends React.Component {
   componentDidMount () {
     this.domNode = findDOMNode(this)
+  }
+
+  componentDidUpdate (prevProps) {
+    const isOver = this.props.isOver
+    if (prevProps.isOver !== isOver) {
+      if (isOver) {
+        this.props.redux.setDragItemOverCalendar(true)
+      } else {
+        window.setTimeout(() => this.props.redux.setDragItemOverCalendar(false), 50) // delay leave so the other enter always applies first (when dragging onto another DayColumn)
+      }
+    }
   }
 
   componentWillUnmount () {
@@ -210,6 +222,8 @@ DayColumn.propTypes = {
       PropTypes.func
     ])
   }).isRequired,
+  connectDropTarget: PropTypes.func.isRequired,
+  isOver: PropTypes.bool.isRequired,
   redux: PropTypes.shape({
     slotDuration: PropTypes.number.isRequired,
     slotInterval: PropTypes.number.isRequired,
@@ -221,7 +235,8 @@ DayColumn.propTypes = {
     rtl: PropTypes.bool,
     onSelectBackgroundEvent: PropTypes.func.isRequired,
     onDoubleClickEvent: PropTypes.func.isRequired,
-    onSelectEvent: PropTypes.func.isRequired
+    onSelectEvent: PropTypes.func.isRequired,
+    setDragItemOverCalendar: PropTypes.func.isRequired
   }).isRequired
 }
 
@@ -256,7 +271,8 @@ const mapDispatchToProps = {
   onDoubleClickEvent,
   onSelectBackgroundEvent,
   onEventDrag,
-  onEventResizing
+  onEventResizing,
+  setDragItemOverCalendar
 }
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => ({
@@ -355,16 +371,15 @@ const dropTargetSpec = {
       }
 
       return true
-    } else {
-      return canDrop
     }
 
-    return true
+    return canDrop
   }
 }
 
 const dropTargetCollect = (connect, monitor) => ({
-  connectDropTarget: connect.dropTarget()
+  connectDropTarget: connect.dropTarget(),
+  isOver: monitor.isOver()
 })
 
 export default compose(

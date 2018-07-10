@@ -197,6 +197,14 @@ export const onEventDragBegin = (data, accessors) =>
     })
   }
 
+export const EVENT_DRAG_OVER_CALENDAR_CHANGE_ACTION = 'EVENT_DRAG_OVER_CALENDAR_CHANGE'
+export const setDragItemOverCalendar = (isOver) => {
+  return {
+    type: EVENT_DRAG_OVER_CALENDAR_CHANGE_ACTION,
+    payload: isOver
+  }
+}
+
 export const EVENT_RESIZE_BEGIN_ACTION = 'EVENT_RESIZE_BEGIN'
 export const onEventResizeBegin = (data) => {
   return {

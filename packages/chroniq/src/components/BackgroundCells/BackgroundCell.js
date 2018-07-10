@@ -8,9 +8,20 @@ import { DropTarget } from 'react-dnd'
 
 import { connect } from '../../store/connect'
 import { makeCanDrop, makeGetHighlightEventsForResourcesAndRange } from '../../selectors/highlightEvents'
-import { onEventDrag, onEventResizing } from '../../store/actions'
+import { onEventDrag, onEventResizing, setDragItemOverCalendar } from '../../store/actions'
 
 class BackgroundCell extends React.PureComponent {
+  componentDidUpdate (prevProps) {
+    const isOver = this.props.isOver
+    if (prevProps.isOver !== isOver && this.props.itemType === 'drag') {
+      if (isOver) {
+        this.props.redux.setDragItemOverCalendar(true)
+      } else {
+        window.setTimeout(() => this.props.redux.setDragItemOverCalendar(false), 50) // delay leave so the other enter always applies first (when dragging onto another DayColumn)
+      }
+    }
+  }
+
   render () {
     const { connectDropTarget, wrapper: Wrapper, date, resources, selected, currentDate, redux: { previewIntensity } } = this.props
 
@@ -133,7 +144,9 @@ const dropTargetSpec = {
 }
 
 const dropTargetCollect = (connect, monitor) => ({
-  connectDropTarget: connect.dropTarget()
+  connectDropTarget: connect.dropTarget(),
+  isOver: monitor.isOver(),
+  itemType: monitor.getItemType()
 })
 
 const makeMapStateToProps = () => {
@@ -163,7 +176,8 @@ const makeMapStateToProps = () => {
 
 const mapDispatchToProps = {
   onEventDrag,
-  onEventResizing
+  onEventResizing,
+  setDragItemOverCalendar
 }
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => ({

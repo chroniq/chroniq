@@ -16,6 +16,7 @@ import {
   ACTIVATE_ALL_RESOURCES_ACTION,
   EVENT_DRAG_BEGIN_ACTION,
   EVENT_DRAG_ACTION,
+  EVENT_DRAG_OVER_CALENDAR_CHANGE_ACTION,
   EVENT_DROP_ACTION,
   EVENT_RESIZE_BEGIN_ACTION,
   EVENT_RESIZING_ACTION,
@@ -208,6 +209,12 @@ const onEventDrag = (state, action) => {
     )
 }
 
+const onEventDragChangeIsOver = (state, action) => state.updateIn(
+  [ 'dnd', 'isOver' ],
+  0,
+  (currentValue) => currentValue + (action.payload ? 1 : -1)
+)
+
 const onEventDrop = (state, action) => state.setIn([ 'dnd', 'isDragging' ], false)
 
 const getDefaultState = () => Map()
@@ -225,6 +232,7 @@ export default handleActions({
   [ACTIVATE_ALL_RESOURCES_ACTION]: activateAllResources,
   [EVENT_DRAG_BEGIN_ACTION]: onEventDragBegin,
   [EVENT_DRAG_ACTION]: onEventDrag,
+  [EVENT_DRAG_OVER_CALENDAR_CHANGE_ACTION]: onEventDragChangeIsOver,
   [EVENT_DROP_ACTION]: onEventDrop,
   [EVENT_RESIZE_BEGIN_ACTION]: onEventDragBegin,
   [EVENT_RESIZING_ACTION]: onEventDrag,

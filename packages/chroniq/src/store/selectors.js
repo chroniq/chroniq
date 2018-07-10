@@ -11,6 +11,7 @@ const getEventResourceId = (state, accessors, event) => get(event, accessors.eve
 export const getEvents = (state) => state.getIn([ 'props', 'events' ])
 
 export const isDragging = (state) => state.getIn([ 'dnd', 'isDragging' ], false)
+export const isDragInside = (state) => state.getIn([ 'dnd', 'isOver' ], false) > 0
 
 export const getSelectedEvents = (state) => state.getIn([ 'props', 'selectedEvents' ], List())
 

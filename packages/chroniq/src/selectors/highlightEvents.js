@@ -5,13 +5,13 @@ import dates from '../utils/dates'
 import { inRange, sortEvents } from '../utils/eventLevels'
 import { get, length } from '@chroniq/chroniq-accessor-helpers'
 
-import { getEvents, getSlotDuration, isDragging } from '../store/selectors'
+import { getEvents, getSlotDuration, isDragging, isDragInside } from '../store/selectors'
 
 const getResources = (state, resources, accessors, range) => resources
 const getRange = (state, resources, accessors, range) => range
 const getAccessors = (state, resources, accessors, range) => accessors
 
-const getHighlightEventIds = (state) => isDragging(state)
+const getHighlightEventIds = (state) => (isDragging(state) && isDragInside(state))
   ? state.getIn([ 'dnd', 'previews' ], List())
   : List()
 

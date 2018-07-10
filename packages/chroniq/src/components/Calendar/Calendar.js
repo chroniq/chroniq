@@ -34,7 +34,8 @@ import {
 import {
   getSelectedEvents,
   getJoinedResources,
-  isDragging
+  isDragging,
+  isDragInside
 } from '../../store/selectors'
 
 import { views } from '../../utils/constants'
@@ -104,6 +105,10 @@ class Calendar extends React.PureComponent {
   ]
 
   dragAndDropSelector = (state, action) => {
+    if (!isDragInside(state)) {
+      return false
+    }
+
     const { accessors, step } = this.props
 
     const startOffset = state.getIn([ 'dnd', 'startOffset' ])
