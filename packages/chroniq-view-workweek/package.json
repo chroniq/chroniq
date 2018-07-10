@@ -1,6 +1,6 @@
 {
 	"name": "@chroniq/chroniq-view-workweek",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "storybook for chroniq",
 	"author": "Christian Birg <cbirg@incoqnito.de>",
 	"contributors": [
@@ -57,7 +57,7 @@
 		"stylus": "^0.54.5"
 	},
 	"dependencies": {
-		"@chroniq/chroniq": "^0.1.0",
-		"@chroniq/chroniq-view-week": "^0.1.0"
+		"@chroniq/chroniq": "^0.1.1",
+		"@chroniq/chroniq-view-week": "^0.1.1"
 	}
 }
