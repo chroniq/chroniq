@@ -284,7 +284,18 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
 })
 
 const calcHoveredTime = (monitor, component, { minTime, maxTime, snapDuration }) => {
-  const currentOffset = monitor.getClientOffset()
+  const clientOffset = monitor.getClientOffset()
+  const initialClientOffset = monitor.getInitialClientOffset()
+  const initialSourceClientOffset = monitor.getInitialSourceClientOffset()
+  const mouseOffset = {
+    x: initialClientOffset.x - initialSourceClientOffset.x,
+    y: initialClientOffset.y - initialSourceClientOffset.y
+  }
+  const currentOffset = {
+    x: clientOffset.x - mouseOffset.x,
+    y: clientOffset.y - mouseOffset.y
+  }
+
   const componentRect = component.getBoundingClientRect()
 
   const absoluteY = currentOffset.y - componentRect.y
@@ -293,7 +304,7 @@ const calcHoveredTime = (monitor, component, { minTime, maxTime, snapDuration })
   const minutesThisDay = dates.diff(minTime, maxTime, 'minutes', true)
   const hoveredMinutes = minutesThisDay * relativeY
 
-  return dates.add(minTime, hoveredMinutes - (hoveredMinutes % snapDuration) + (monitor.getItemType() === 'resize' ? snapDuration : 0), 'minutes')
+  return dates.add(minTime, hoveredMinutes - (hoveredMinutes % snapDuration) + snapDuration, 'minutes')
 }
 
 const dropTargetSpec = {
