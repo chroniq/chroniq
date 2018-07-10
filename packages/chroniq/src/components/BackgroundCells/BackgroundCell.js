@@ -57,8 +57,11 @@ const calcHoveredTime = (monitor, accessors, date) => {
   return dates.merge(date, eventStart)
 }
 
+var lastHoveredTime = null
 const dropTargetSpec = {
   drop ({ date, accessors, resources }, monitor, component) {
+    lastHoveredTime = null
+
     const event = monitor.getItem()
     const currentlyHoveredTime = calcHoveredTime(monitor, accessors, date)
 
@@ -92,6 +95,11 @@ const dropTargetSpec = {
 
     const event = monitor.getItem()
     const currentlyHoveredTime = calcHoveredTime(monitor, accessors, date)
+
+    if (currentlyHoveredTime.getTime() === lastHoveredTime) {
+      return
+    }
+    lastHoveredTime = currentlyHoveredTime.getTime()
 
     if (monitor.getItemType() === 'drag') {
       const eventStartEndDiff = dates.diff(

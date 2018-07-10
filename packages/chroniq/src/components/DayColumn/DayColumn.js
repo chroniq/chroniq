@@ -307,8 +307,11 @@ const calcHoveredTime = (monitor, component, { minTime, maxTime, snapDuration })
   return dates.add(minTime, hoveredMinutes - (hoveredMinutes % snapDuration) + snapDuration, 'minutes')
 }
 
+var lastHoveredTime = null
 const dropTargetSpec = {
   drop ({ redux: { minTime, maxTime, snapDuration }, accessors, resources }, monitor, component) {
+    lastHoveredTime = null
+
     const event = monitor.getItem()
     const currentlyHoveredTime = calcHoveredTime(monitor, component, { minTime, maxTime, snapDuration })
 
@@ -342,6 +345,11 @@ const dropTargetSpec = {
 
     const event = monitor.getItem()
     const currentlyHoveredTime = calcHoveredTime(monitor, component, { minTime, maxTime, snapDuration })
+
+    if (currentlyHoveredTime.getTime() === lastHoveredTime) {
+      return
+    }
+    lastHoveredTime = currentlyHoveredTime.getTime()
 
     if (monitor.getItemType() === 'drag') {
       const eventStartEndDiff = dates.diff(
