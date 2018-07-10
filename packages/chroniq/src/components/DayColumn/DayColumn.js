@@ -298,7 +298,7 @@ const calcHoveredTime = (monitor, component, { minTime, maxTime, snapDuration })
 
   const componentRect = component.getBoundingClientRect()
 
-  const absoluteY = currentOffset.y - componentRect.y
+  const absoluteY = currentOffset.y - (componentRect.y || componentRect.top)
   const relativeY = absoluteY / componentRect.height
 
   const minutesThisDay = dates.diff(minTime, maxTime, 'minutes', true)
