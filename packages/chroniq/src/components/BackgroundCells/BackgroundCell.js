@@ -135,11 +135,9 @@ const dropTargetSpec = {
       }
 
       return true
-    } else {
-      return canDrop
     }
 
-    return true
+    return canDrop
   }
 }
 
@@ -154,7 +152,6 @@ const makeMapStateToProps = () => {
   const getHighlightEventsForResourcesAndRange = makeGetHighlightEventsForResourcesAndRange()
 
   const mapStateToProps = (state, props) => {
-
     return {
       canDrop: canDrop(state, props.resources, props.accessors),
       previewIntensity: props.monthView && getHighlightEventsForResourcesAndRange(state, props.resources, {
