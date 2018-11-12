@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import dates from '../../utils/dates'
 
 import { classNames, compose } from '../../utils/helpers'
