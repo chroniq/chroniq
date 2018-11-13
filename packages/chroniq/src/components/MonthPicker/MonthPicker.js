@@ -13,16 +13,21 @@ class MonthPicker extends React.PureComponent {
     super(props)
 
     this.state = {
+      selected: props.selected,
       year: props.year,
       selectedMonth: props.selected || moment()
     }
     this.state.lines = this.calculateLines(this.state.year, this.state.selectedMonth)
   }
 
-  componentWillReceiveProps (newProps) {
-    if (newProps.selected !== this.props.selected) {
-      this.selectMonth(newProps.selected)
-    }
+  static getDerivedStateFromProps (nextProps, prevState) {
+    if (nextProps.selected !== prevState.selected) {
+      return { selected: nextProps.selected }
+    } else return null
+  }
+
+  componentDidUpdate () {
+    this.selectMonth(this.state.selected)
   }
 
   generateEntry = (month, selectedMonth, today) => ({

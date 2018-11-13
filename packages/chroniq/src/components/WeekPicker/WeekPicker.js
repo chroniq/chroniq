@@ -7,25 +7,25 @@ import MonthSelector from './MonthSelector.js'
 import { classNames } from '../../utils/helpers'
 
 class WeekPicker extends React.PureComponent {
-  state = {
-    month: null,
-    seelcted: null,
-    lines: []
-  }
+  constructor (props) {
+    super(props)
 
-  componentWillMount () {
-    let { month, selected } = this.props
-    this.setState({
-      month: month,
-      selectedWeek: selected || moment(),
-      lines: this.calculateLines(month)
-    })
-  }
-
-  componentWillReceiveProps (newProps) {
-    if (newProps.selected !== this.props.selected) {
-      this.selectWeek(newProps.selected)
+    this.state = {
+      month: props.month,
+      selected: null,
+      selectedWeek: props.selected || moment(),
+      lines: this.calculateLines(props.month)
     }
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.selected !== prevState.selected) {
+      return { selected: nextProps.selected }
+    } else return null
+  }
+
+  componentDidUpdate() {
+    this.selectWeek(this.state.selected)
   }
 
   generateEntry = (day, today, selectedWeek, month) => ({

@@ -24,14 +24,13 @@ class TimeGrid extends React.PureComponent {
       gutterWidth: undefined,
       isOverflowing: null
     }
-  }
 
-  componentWillMount () {
     this._gutters = []
-    this.calculateScroll()
   }
 
   componentDidMount () {
+    this.calculateScroll()
+
     this.checkOverflow()
 
     if (this.props.width == null) {
@@ -55,16 +54,13 @@ class TimeGrid extends React.PureComponent {
     this.applyScroll()
     this.positionTimeIndicator()
     // this.checkOverflow()
-  }
-
-  componentWillReceiveProps (nextProps) {
     const { range } = this.props
     const { scrollTime } = this.props.redux
 
     // When paginating, reset scroll
     if (
-      !dates.eq(nextProps.range[0], range[0], 'minute') ||
-      !dates.eq(nextProps.redux.scrollTime, scrollTime, 'minute')
+      !dates.eq(this.props.range[0], range[0], 'minute') ||
+      !dates.eq(this.props.redux.scrollTime, scrollTime, 'minute')
     ) {
       this.calculateScroll()
     }

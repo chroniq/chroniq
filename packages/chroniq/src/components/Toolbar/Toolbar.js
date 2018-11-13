@@ -21,11 +21,9 @@ class Toolbar extends React.PureComponent {
     }
   }
 
-  componentWillMount () {
-    window.addEventListener('resize', this.setPosition, false)
-  }
-
   componentDidMount () {
+    window.addEventListener('resize', this.setPosition, false)
+
     this.setState({
       portalRef: closest(findDOMNode(this.dropdownRef), '.chrnq-calendar'),
       isMounted: true

@@ -46,9 +46,9 @@ class TimeColumn extends React.Component {
     this._teardownSelectable()
   }
 
-  componentWillReceiveProps (nextProps) {
-    if (nextProps.redux.selectable && !this.props.redux.selectable && !this.props.isLegend) { this._selectable() }
-    if (!nextProps.redux.selectable && this.props.redux.selectable && !this.props.isLegend) { this._teardownSelectable() }
+  componentDidUpdate (prevProps) {
+    if (this.props.redux.selectable && !prevProps.redux.selectable && !prevProps.isLegend) { this._selectable() }
+    if (!this.props.redux.selectable && prevProps.redux.selectable && !prevProps.isLegend) { this._teardownSelectable() }
   }
 
   renderTimeSliceGroup (key, isNow, date) {

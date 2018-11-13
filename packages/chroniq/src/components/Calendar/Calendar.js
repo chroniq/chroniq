@@ -76,21 +76,26 @@ class Calendar extends React.PureComponent {
     this.addActionHandlers = addActionHandlers
     this.removeActionHandlers = removeActionHandlers
 
-    this.store = createStore(middleware)
-  }
-  componentWillMount () {
-    this.updateProps({
-      resources: false,
-      backgroundEvents: false,
-      formats: false,
-      messages: false,
-      components: false,
-      joinedResources: false
-    }, this.props)
+    this.store = createStore(middleware, Immutable.Map({
+      props: this.updateProps({
+        resources: false,
+        backgroundEvents: false,
+        formats: false,
+        messages: false,
+        components: false,
+        joinedResources: false
+      }, this.props, true)
+    }))
+
+    this.state = {
+      components: {},
+      accessors: defaultsDeep({}, this.props.accessors, Calendar.defaultProps.accessors),
+      mutators: defaultsDeep({}, this.props.mutators, Calendar.defaultProps.mutators)
+    }
   }
 
-  componentWillReceiveProps (nextProps, nextState) {
-    this.updateProps(this.props, nextProps, nextState)
+  componentDidUpdate (prevProps) {
+    this.updateProps(prevProps, this.props, false)
   }
 
   reduxProps = [
@@ -192,7 +197,7 @@ class Calendar extends React.PureComponent {
     }
   }
 
-  updateProps = (currentProps, nextProps) => {
+  updateProps = (currentProps, nextProps, buildingStore) => {
     Object.keys(this.handlerToActionMapping)
       .filter((handlerName) => currentProps[handlerName] !== nextProps[handlerName])
       .forEach((handlerName) => {
@@ -239,17 +244,11 @@ class Calendar extends React.PureComponent {
     let accessors = currentProps.accessors
     if (nextProps.accessors !== currentProps.accessors) {
       accessors = this.prepareAccessors(nextProps.accessors)
-      this.setState({
-        accessors
-      })
     }
 
     let mutators = currentProps.mutators
     if (nextProps.mutators !== currentProps.mutators) {
       mutators = this.prepareMutators(nextProps.mutators)
-      this.setState({
-        mutators
-      })
     }
 
     if (nextProps.selectedEvents !== currentProps.selectedEvents) {
@@ -299,13 +298,23 @@ class Calendar extends React.PureComponent {
       changedProps = changedProps.set('slotDuration', slotDuration)
     }
 
-    if (nextProps.components !== currentProps.components) {
-      this.setState({
-        components: nextProps.components || {}
-      })
-    }
+    if (buildingStore) {
+      return changedProps
+    } else {
+      if (nextProps.accessors !== currentProps.accessors) {
+        this.setState({ accessors })
+      }
 
-    this.store.dispatch(updateProps(changedProps))
+      if (nextProps.mutators !== currentProps.mutators) {
+        this.setState({ mutators })
+      }
+
+      if (nextProps.components !== currentProps.components) {
+        this.setState({ components: nextProps.components || {} })
+      }
+
+      this.store.dispatch(updateProps(changedProps))
+    }
   }
 
   prepareAccessors = (accessors) => {
@@ -379,7 +388,7 @@ class Calendar extends React.PureComponent {
     const views = this.getViews()
 
     let CalendarToolbar = components.toolbar || Toolbar
-
+    console.log('Memoize check')
     return (
       <Provider store={this.store}>
         <CalendarContainer isRtl={rtl} className={className} style={style}>

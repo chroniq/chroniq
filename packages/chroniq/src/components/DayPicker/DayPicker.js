@@ -7,25 +7,26 @@ import MonthSelector from './MonthSelector.js'
 import { classNames } from '../../utils/helpers'
 
 class DayPicker extends React.PureComponent {
-  state = {
-    month: null,
-    selected: null,
-    lines: []
-  }
+  constructor (props) {
+    super(props)
 
-  componentWillMount () {
-    let { month, selected } = this.props
-    this.setState({
-      month: month,
-      selectedDay: selected || moment(),
-      lines: this.calculateLines(month)
-    })
-  }
-
-  componentWillReceiveProps (newProps) {
-    if (newProps.selected !== this.props.selected) {
-      this.selectDay(newProps.selected)
+    this.state = {
+      month: props.month,
+      selected: null,
+      selectedDay: props.selected || moment(),
+      lines: this.calculateLines(props.month)
     }
+  }
+
+  static getDerivedStateFromProps (nextProps, prevState) {
+    if (nextProps.selected !== prevState.selected) {
+      return { selected: nextProps.selected }
+    }
+    else return null
+  }
+
+  componentDidUpdate () {
+    this.selectDay(this.state.selected)
   }
 
   generateEntry = (day, today, selectedDay, month) => ({
