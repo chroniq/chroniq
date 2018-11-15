@@ -19,17 +19,21 @@ const getResourceId = (event, accessors) => {
 export const prepareEvents = (events, accessors, mutators) => {
   let allEvents = []
   events.forEach((event) => {
-    if (Array.isArray(event.resourceId)) {
-      const resourceIdArray = event.resourceId
+    const resourceId = getResourceId(event, accessors)
+    let tmpEvent = set(event, resourceId, mutators.resourceId)
+    let opEvent = tmpEvent || event
+    if (Array.isArray(resourceId)) {
+      const resourceIdArray = opEvent.resourceId
       resourceIdArray.forEach((resourceId, index) => {
         allEvents.push({
-          ...event,
-          resourceId: resourceId
+          ...opEvent,
+          resourceId
         })
       })
     } else {
       allEvents.push(event)
     }
   })
+  console.log(allEvents)
   return allEvents
 }
