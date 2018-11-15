@@ -388,7 +388,6 @@ class Calendar extends React.PureComponent {
     const views = this.getViews()
 
     let CalendarToolbar = components.toolbar || Toolbar
-    console.log('Memoize check')
     return (
       <Provider store={this.store}>
         <CalendarContainer isRtl={rtl} className={className} style={style}>
