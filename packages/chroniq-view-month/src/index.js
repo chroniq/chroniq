@@ -42,10 +42,12 @@ class MonthView extends React.PureComponent {
     }
   }
 
-  componentWillReceiveProps ({ redux: { date } }) {
-    this.setState({
+  static getDerivedStateFromProps (props) {
+    console.log('test')
+    const { redux: { date } } = props
+    return {
       needLimitMeasure: !dates.eq(date, this.props.redux.date)
-    })
+    }
   }
 
   componentDidMount () {

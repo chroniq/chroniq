@@ -21,7 +21,7 @@ class Page extends React.Component {
     title: 'French'
   } ])
 
-  componentWillMount () {
+  componentDidMount () {
     this.onSelectLanguage(this.languages[0].code)
   }
 
