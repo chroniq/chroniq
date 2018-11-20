@@ -13,13 +13,21 @@ export const getEvents = (state) => state.getIn([ 'props', 'events' ])
 export const isDragging = (state) => state.getIn([ 'dnd', 'isDragging' ], false)
 export const isDragInside = (state) => state.getIn([ 'dnd', 'isOver' ], false) > 0
 
-export const getSelectedEvents = (state) => state.getIn([ 'props', 'selectedEvents' ], List())
+export const getSelectedEvents = (state) => {
+  const selectedEventsIds = state.getIn([ 'props', 'selectedEvents' ], List())
+  const allEvents = state.getIn([ 'props', 'events' ])
+  let selectedEvents = []
+  allEvents.forEach(event => {
+    selectedEventsIds.forEach(eventId => (eventId === event.id) ? selectedEvents.push(event) : null)
+  })
+  return selectedEvents
+}
 
 export const makeIsSelected = () => {
   return createSelector([
     getSelectedEvents,
     getEventId
-  ], (selectedEvents, eventId) => selectedEvents.includes(eventId))
+  ], (selectedEvents, eventId) => !selectedEvents.every((selected) => selected.id !== eventId))
 }
 
 export const makeGetSelectedEvents = () => {

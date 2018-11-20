@@ -77,7 +77,7 @@ const onDateChange = (state, action) => {
 }
 
 const onViewChange = (state, action) => {
-  return state.setIn([ 'props', 'view' ], action.payload)
+  return state.setIn([ 'props', 'view' ], action.payload.view)
 }
 
 const onSplitResource = (state, action) => {

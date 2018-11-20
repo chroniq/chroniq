@@ -122,29 +122,46 @@ class Calendar extends React.PureComponent {
     const resourceId = state.getIn([ 'dnd', 'resourceId' ])
 
     const affectedEventIds = state.getIn([ 'dnd', 'previews' ])
-    return affectedEventIds
-      .map((id) => {
-        const event = this.props.events.find((event) => get(event, accessors.event.id) === id)
+    const affectedEvents = affectedEventIds.map((id) => {
+      const event = this.props.events.find((event) => get(event, accessors.event.id) === id)
+      const start = dates.add(get(event, accessors.event.start), startOffset, 'minutes')
+      const end = dates.add(get(event, accessors.event.end), endOffset, 'minutes')
 
-        const start = dates.add(get(event, accessors.event.start), startOffset, 'minutes')
-        const end = dates.add(get(event, accessors.event.end), endOffset, 'minutes')
+      return {
+        ...event,
+        resourceId: resourceId === originalResourceId ? get(event, accessors.event.resourceId) : resourceId,
+        start,
+        end: start < end ? end : dates.add(start, step, 'minutes')
+      }
+    })
 
-        return {
-          id,
-          resourceId: resourceId === originalResourceId ? get(event, accessors.event.resourceId) : resourceId,
-          start,
-          end: start < end ? end : dates.add(start, step, 'minutes'),
-          event
-        }
-      })
-      .toArray()
+    return {
+      events: affectedEvents.toArray(),
+      state: state.toJS().props
+    }
+    // return affectedEventIds
+    //   .map((id) => {
+    //     const event = this.props.events.find((event) => get(event, accessors.event.id) === id)
+
+    //     const start = dates.add(get(event, accessors.event.start), startOffset, 'minutes')
+    //     const end = dates.add(get(event, accessors.event.end), endOffset, 'minutes')
+
+    //     return {
+    //       id,
+    //       resourceId: resourceId === originalResourceId ? get(event, accessors.event.resourceId) : resourceId,
+    //       start,
+    //       end: start < end ? end : dates.add(start, step, 'minutes'),
+    //       event
+    //     }
+    //   })
+    //   .toArray()
   }
 
   handlerToActionMapping = {
     'onSelectEvent': {
       controlledProp: 'selectedEvents',
       actions: [ SELECT_EVENT_ACTION ],
-      selector: (state) => getSelectedEvents(state).toJS(),
+      selector: (state) => getSelectedEvents(state),
       controlled: {
         selector: null
       }

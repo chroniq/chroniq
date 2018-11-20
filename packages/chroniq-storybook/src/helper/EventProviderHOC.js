@@ -20,8 +20,7 @@ export default class EventProviderHOC extends React.Component {
 
     this.setState((prevState) => ({
       events: prevState.events.map((event) => {
-        const newEvent = newData.find((newData) => newData.id === event.id)
-
+        const newEvent = newData.events.find((eventElement) => eventElement.id === event.id)
         return newEvent
           ? {
             ...event,

@@ -34,6 +34,5 @@ export const prepareEvents = (events, accessors, mutators) => {
       allEvents.push(event)
     }
   })
-  console.log(allEvents)
   return allEvents
 }
