@@ -18,6 +18,9 @@ const defaultMessages = {
 }
 
 export function prepareMessages (msgs) {
+  console.log('PrepareMessages', {
+    ...msgs
+  })
   return {
     ...defaultMessages,
     ...msgs
