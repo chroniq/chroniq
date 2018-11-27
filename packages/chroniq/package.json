@@ -1,6 +1,6 @@
 {
   "name": "@chroniq/chroniq",
-  "version": "0.1.2",
+  "version": "0.1.1",
   "description": "A ressource management calendar",
   "author": "Christian Birg <cbirg@incoqnito.de>",
   "contributors": [
@@ -58,13 +58,13 @@
   },
   "dependencies": {
     "@chroniq/chroniq-accessor-helpers": "^0.1.0",
-    "@chroniq/chroniq-accessors-object": "^0.1.2",
-    "@chroniq/chroniq-layout-strategy-default": "^0.1.2",
-    "@chroniq/chroniq-view-agenda": "^0.1.2",
-    "@chroniq/chroniq-view-day": "^0.1.2",
-    "@chroniq/chroniq-view-month": "^0.1.2",
-    "@chroniq/chroniq-view-week": "^0.1.2",
-    "@chroniq/chroniq-view-workweek": "^0.1.2",
+    "@chroniq/chroniq-accessors-object": "^0.1.1",
+    "@chroniq/chroniq-layout-strategy-default": "^0.1.1",
+    "@chroniq/chroniq-view-agenda": "^0.1.1",
+    "@chroniq/chroniq-view-day": "^0.1.1",
+    "@chroniq/chroniq-view-month": "^0.1.1",
+    "@chroniq/chroniq-view-week": "^0.1.1",
+    "@chroniq/chroniq-view-workweek": "^0.1.1",
     "@incoqnito.io/smart-component": "^1.1.1",
     "classnames": "^2.1.3",
     "date-arithmetic": "^3.0.0",
