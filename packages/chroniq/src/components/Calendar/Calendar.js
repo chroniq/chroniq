@@ -88,7 +88,7 @@ class Calendar extends React.PureComponent {
     }))
 
     this.state = {
-      components: {},
+      components: (this.props.components) ? this.props.components : {},
       accessors: defaultsDeep({}, this.props.accessors, Calendar.defaultProps.accessors),
       mutators: defaultsDeep({}, this.props.mutators, Calendar.defaultProps.mutators)
     }
@@ -106,7 +106,9 @@ class Calendar extends React.PureComponent {
     'culture',
     'joinedResources',
     'activeResources',
-    'snapDuration'
+    'snapDuration',
+    'enableEventPopup',
+    'eventPopupDirection'
   ]
 
   dragAndDropSelector = (state, action) => {
@@ -139,22 +141,6 @@ class Calendar extends React.PureComponent {
       events: affectedEvents.toArray(),
       state: state.toJS().props
     }
-    // return affectedEventIds
-    //   .map((id) => {
-    //     const event = this.props.events.find((event) => get(event, accessors.event.id) === id)
-
-    //     const start = dates.add(get(event, accessors.event.start), startOffset, 'minutes')
-    //     const end = dates.add(get(event, accessors.event.end), endOffset, 'minutes')
-
-    //     return {
-    //       id,
-    //       resourceId: resourceId === originalResourceId ? get(event, accessors.event.resourceId) : resourceId,
-    //       start,
-    //       end: start < end ? end : dates.add(start, step, 'minutes'),
-    //       event
-    //     }
-    //   })
-    //   .toArray()
   }
 
   handlerToActionMapping = {

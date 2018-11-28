@@ -109,7 +109,11 @@ type Props = {
         action: "select" | "click",
         start: Date,
         end: Date,
-
+        resources: Array<{
+            color: string,
+            id: number | string
+        }>,
+        slots: Array<Date>
     },
     /*
      * accessors
@@ -241,6 +245,7 @@ type Event = {
 ```typescript
 type BackgroundEvent = {
     id: number | string,
+    title: string,
     start: Date,
     end: Date,
     color?: string,

@@ -13,5 +13,6 @@ import './stories/controllable'
 import './stories/accessors'
 import './stories/use-cases'
 import './stories/resources-array'
+import './stories/event-popup'
 
 import '@chroniq/chroniq/lib/index.styl'

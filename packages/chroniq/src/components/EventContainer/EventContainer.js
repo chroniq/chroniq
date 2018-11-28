@@ -50,12 +50,14 @@ class EventContainer extends React.Component {
       components: {
         event: EventComponent,
         eventOverlay: EventOverlayComponent,
-        eventWrapper: EventWrapper
+        eventWrapper: EventWrapper,
+        eventPopupView: EventPopupView
       },
       eventTimeRangeFormat,
       eventTimeRangeStartFormat,
       eventTimeRangeEndFormat,
-      accessors
+      accessors,
+      timeContentRef
     } = this.props
 
     let {
@@ -148,6 +150,8 @@ class EventContainer extends React.Component {
         eventWrapperComponent={EventWrapper}
         eventComponent={EventComponent}
         eventOverlayComponent={EventOverlayComponent}
+        eventPopupView={EventPopupView}
+        timeContentRef={timeContentRef}
       />
     })
   };

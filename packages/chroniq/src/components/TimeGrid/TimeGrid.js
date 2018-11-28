@@ -26,6 +26,7 @@ class TimeGrid extends React.PureComponent {
     }
 
     this._gutters = []
+    this.timeContentRef = null
   }
 
   componentDidMount () {
@@ -154,6 +155,7 @@ class TimeGrid extends React.PureComponent {
           style={style}
           key={key}
           layoutStrategies={this.props.layoutStrategies}
+          timeContentRef={this.contentRef}
         />
       )
     })

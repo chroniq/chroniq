@@ -66,7 +66,8 @@ class DayColumn extends React.Component {
       accessors,
       resources,
       components,
-      layoutStrategies
+      layoutStrategies,
+      timeContentRef
     } = this.props
 
     const {
@@ -150,6 +151,7 @@ class DayColumn extends React.Component {
             eventTimeRangeStartFormat={eventTimeRangeStartFormat}
             eventTimeRangeEndFormat={eventTimeRangeEndFormat}
             accessors={accessors}
+            timeContentRef={timeContentRef}
           />
 
           <BackgroundEventContainer

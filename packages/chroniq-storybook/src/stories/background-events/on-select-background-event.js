@@ -18,7 +18,8 @@ const DefaultView = () => <EventProviderHOC>
       end: moment()
         .hour(8)
         .minute(0)
-        .toDate()
+        .toDate(),
+      title: 'BackgroundEvent 1'
     }, {
       id: 1,
       start: moment()
@@ -28,7 +29,8 @@ const DefaultView = () => <EventProviderHOC>
       end: moment()
         .hour(22)
         .minute(0)
-        .toDate()
+        .toDate(),
+      title: 'BackgroundEvent 2'
     } ]}
     onSelectBackgroundEvent={action('background event selected')}
     date={new Date()}

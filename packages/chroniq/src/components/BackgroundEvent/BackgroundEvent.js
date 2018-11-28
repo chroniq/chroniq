@@ -54,7 +54,9 @@ class BackgroundEvent extends React.Component {
               style={{
                 backgroundColor: backgroundColor
               }}
-            />
+            >
+              <span className='chrnq-background-event-title'>{ event.title }</span>
+            </div>
           )}
       </div>
     )

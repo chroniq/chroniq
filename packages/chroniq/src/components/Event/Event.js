@@ -1,4 +1,6 @@
 import React from 'react'
+import { createPortal } from 'react-dom'
+
 import PropTypes from 'prop-types'
 
 import { DragSource } from 'react-dnd'
@@ -27,11 +29,20 @@ import { get } from '@chroniq/chroniq-accessor-helpers'
 import SmartComponent from '@incoqnito.io/smart-component'
 
 import Resizer from './Resizer.js'
+import EventPopup from '../EventPopup/EventPopup'
 
 class Event extends React.Component {
+  constructor (props) {
+    super(props)
+
+    this.eventDiv = null
+  }
+
   state = {
     isDragging: false,
-    dragStart: false
+    dragStart: false,
+    eventCoordinates: false,
+    mouseOver: false
   }
 
   onBeginDrag = () => {
@@ -44,6 +55,20 @@ class Event extends React.Component {
   onEndDrag = () => {
     this.setState({
       isDragging: false
+    })
+  }
+  // Getting size of Event element, sending it to EventArrow and draw
+  onMouseEnter = (id) => {
+    this.setState({
+      eventCoordinates: this.eventDiv.getBoundingClientRect(),
+      timeContentCoordinates: this.props.timeContentRef.getBoundingClientRect(),
+      mouseOver: true
+    })
+  }
+  // Switch off Event Tooltip when mouse poing left the Event component
+  onMouseLeave = (id) => {
+    this.setState({
+      mouseOver: false
     })
   }
 
@@ -61,17 +86,22 @@ class Event extends React.Component {
       eventWrapperComponent: EventWrapper,
       eventComponent: Event,
       eventOverlayComponent: EventOverlay,
+      eventPopupView: EventPopupView,
       style,
       startsEarlier,
       continuesAfter,
       startsPriorDay,
       continuesNextDay,
-      accessors
+      accessors,
+      timeContentRef
     } = this.props
-
-    const { isSelected, isDeactivated } = this.props.redux
+    const {
+      isSelected,
+      isDeactivated,
+      enableEventPopup,
+      eventPopupDirection
+    } = this.props.redux
     const { isDragging, dragStart } = this.state
-
     const className = classNames(passedClassName, 'chrnq-event', {
       'chrnq-selected': isSelected,
       '--is-deactivated': isDeactivated,
@@ -82,7 +112,6 @@ class Event extends React.Component {
       'chrnq-dnd-dragging': isDragging,
       'chrnq-dnd-drag-start': dragStart
     })
-
     return (
       <EventWrapper event={event}>
         {
@@ -93,7 +122,20 @@ class Event extends React.Component {
               onClick={onClick}
               onDoubleClick={onDoubleClick}
               className={className}
+              onMouseEnter={() => this.onMouseEnter(event.id)}
+              onMouseLeave={() => this.onMouseLeave(event.id)}
+              ref={(el) => this.eventDiv = el}
             >
+              {
+                (enableEventPopup && this.state.mouseOver) && createPortal(
+                  <EventPopup
+                    direction={eventPopupDirection}
+                    eventCoordinates={this.state.eventCoordinates}
+                    timeContentCoordinates={this.state.timeContentCoordinates}
+                    eventPopupView={EventPopupView} />,
+                  timeContentRef
+                )
+              }
               <div className='chrnq-event-content'>
                 { Event
                   ? <Event date={date} event={event} title={title} color={color} />
@@ -155,6 +197,7 @@ Event.propTypes = {
   ]),
   eventComponent: PropTypes.func,
   eventOverlayComponent: PropTypes.func,
+  eventPopupView: PropTypes.func,
 
   style: PropTypes.object.isRequired,
 
@@ -170,10 +213,13 @@ const makeMapStateToProps = () => {
 
   const mapStateToProps = (state, props) => {
     let { accessors, event } = props
+    const reduxState = state.toJS().props
     return {
       redux: {
         isSelected: isSelected(state, accessors, event),
-        isDeactivated: isDeactivated(state, accessors, event)
+        isDeactivated: isDeactivated(state, accessors, event),
+        enableEventPopup: reduxState.enableEventPopup,
+        eventPopupDirection: reduxState.eventPopupDirection
       }
     }
   }
