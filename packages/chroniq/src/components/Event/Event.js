@@ -42,7 +42,10 @@ class Event extends React.Component {
     isDragging: false,
     dragStart: false,
     eventCoordinates: false,
-    mouseOver: false
+    mouseOver: false,
+    showPopup: false,
+    hoverOnEventPopup: (this.props.redux.hoverOnEventPopup) ? true : false,
+    enableEventPopup: (this.props.redux.enableEventPopup) ? true : false
   }
 
   onBeginDrag = () => {
@@ -59,17 +62,33 @@ class Event extends React.Component {
   }
   // Getting size of Event element, sending it to EventArrow and draw
   onMouseEnter = (id) => {
-    this.setState({
-      eventCoordinates: this.eventDiv.getBoundingClientRect(),
-      timeContentCoordinates: this.props.timeContentRef.getBoundingClientRect(),
-      mouseOver: true
-    })
+    if (this.state.hoverOnEventPopup) {
+      this.setState({
+        eventCoordinates: this.eventDiv.getBoundingClientRect(),
+        timeContentCoordinates: this.props.timeContentRef.getBoundingClientRect(),
+        mouseOver: true
+      })
+    }
   }
   // Switch off Event Tooltip when mouse poing left the Event component
   onMouseLeave = (id) => {
-    this.setState({
-      mouseOver: false
-    })
+    if (this.state.hoverOnEventPopup) {
+      this.setState({
+        mouseOver: false
+      })
+    }
+  }
+
+  // Show popup onClick
+  onClickPopupShowing = (e) => {
+    this.props.onClick(e)
+    if (this.state.enableEventPopup) {
+      this.setState({
+        eventCoordinates: this.eventDiv.getBoundingClientRect(),
+        timeContentCoordinates: this.props.timeContentRef.getBoundingClientRect(), 
+        showPopup: !this.state.showPopup
+      })
+    }
   }
 
   render () {
@@ -81,7 +100,6 @@ class Event extends React.Component {
       title,
       label,
       color,
-      onClick,
       onDoubleClick,
       eventWrapperComponent: EventWrapper,
       eventComponent: Event,
@@ -98,8 +116,7 @@ class Event extends React.Component {
     const {
       isSelected,
       isDeactivated,
-      enableEventPopup,
-      eventPopupDirection
+      eventPopupDirection,
     } = this.props.redux
     const { isDragging, dragStart } = this.state
     const className = classNames(passedClassName, 'chrnq-event', {
@@ -112,6 +129,10 @@ class Event extends React.Component {
       'chrnq-dnd-dragging': isDragging,
       'chrnq-dnd-drag-start': dragStart
     })
+
+    const enableEventPopup = this.state.enableEventPopup
+    const hoverOnEventPopup = this.state.hoverOnEventPopup
+
     return (
       <EventWrapper event={event}>
         {
@@ -119,7 +140,7 @@ class Event extends React.Component {
             <div
               style={style}
               title={typeof label === 'string' ? label : ''}
-              onClick={onClick}
+              onClick={this.onClickPopupShowing}
               onDoubleClick={onDoubleClick}
               className={className}
               onMouseEnter={() => this.onMouseEnter(event.id)}
@@ -127,8 +148,9 @@ class Event extends React.Component {
               ref={(el) => this.eventDiv = el}
             >
               {
-                (enableEventPopup && this.state.mouseOver) && createPortal(
+                ((enableEventPopup && this.state.mouseOver && hoverOnEventPopup) || (enableEventPopup && !hoverOnEventPopup && this.state.showPopup)) && createPortal(
                   <EventPopup
+                    event={event}
                     direction={eventPopupDirection}
                     eventCoordinates={this.state.eventCoordinates}
                     timeContentCoordinates={this.state.timeContentCoordinates}
@@ -219,7 +241,8 @@ const makeMapStateToProps = () => {
         isSelected: isSelected(state, accessors, event),
         isDeactivated: isDeactivated(state, accessors, event),
         enableEventPopup: reduxState.enableEventPopup,
-        eventPopupDirection: reduxState.eventPopupDirection
+        eventPopupDirection: reduxState.eventPopupDirection,
+        hoverOnEventPopup: reduxState.hoverOnEventPopup
       }
     }
   }

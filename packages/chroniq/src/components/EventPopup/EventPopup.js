@@ -1,6 +1,7 @@
 import React from 'react'
 
 import EventPopupWrapper from './EventPopupWrapper'
+import EventPopupDefault from './EventPopupDefault'
 
 export default class EventPopup extends React.Component {
   constructor (props) {
@@ -134,18 +135,27 @@ export default class EventPopup extends React.Component {
 
   render () {
     const {
-      eventPopupView: EventPopupView
+      eventPopupView: EventPopupView,
+      event
     } = this.props
     const coordinatesX = (this.state.tooltipData.x) ? this.state.tooltipData.x : 0
     const coordinatesY = (this.state.tooltipData.y) ? this.state.tooltipData.y : 0
     return (
-      <div ref={el => this.tooltipCoverDiv = el} style={{ position: 'relative' }}>
+      <div ref={el => this.tooltipCoverDiv = el} style={{ position: 'relative', zIndex: '101' }}>
         <EventPopupWrapper
           coordinatesX={coordinatesX}
           coordinatesY={coordinatesY}
           width={this.state.eventPopupWrapperWidth}
           height={this.state.eventPopupWrapperHeight}>
-          <EventPopupView innerRef={el => this.customViewRef = el} />
+          {
+            (this.props.eventPopupView) 
+              ? <EventPopupView 
+                onRef={(el) => this.customViewRef = el}
+                event={event} />
+              : <EventPopupDefault
+                onRef={(el) => this.customViewRef = el}
+                event={event} />
+          }
         </EventPopupWrapper>
       </div>
     )

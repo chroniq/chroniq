@@ -26,10 +26,10 @@ class BackgroundCells extends React.PureComponent {
     this._teardownSelectable()
   }
 
-  componentDidUpdate (prevProps) {
-    if (this.props.selectable && !prevProps.selectable) { this._selectable() }
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.selectable && !this.props.selectable) { this._selectable() }
 
-    if (!this.props.selectable && prevProps.selectable) { this._teardownSelectable() }
+    if (!nextProps.selectable && this.props.selectable) { this._teardownSelectable() }
   }
 
   render () {

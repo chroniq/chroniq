@@ -4,7 +4,7 @@ import thunk from 'redux-thunk'
 
 export const STORE_KEY = 'CHRNQ-REDUX_STORE'
 
-export const createStore = (middleware, preloadedStore) => createReduxStore(reducer, preloadedStore, window.__REDUX_DEVTOOLS_EXTENSION__ && process.env.NODE_ENV === 'development'
+export const createStore = (middleware) => createReduxStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && process.env.NODE_ENV === 'development'
   ? compose(
     applyMiddleware(thunk, middleware),
     window.__REDUX_DEVTOOLS_EXTENSION__()

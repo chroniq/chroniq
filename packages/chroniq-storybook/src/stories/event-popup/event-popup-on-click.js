@@ -6,12 +6,6 @@ import { action } from '@storybook/addon-actions'
 import Chroniq from '@chroniq/chroniq/lib'
 import EventProviderHOC from '../../helper/EventProviderHOC'
 
-const eventPopup = styled.div`
-  border: 2px solid red;
-  height: 200px;
-  width: 200px;
-`
-
 export default () => <EventProviderHOC>
   <Chroniq
     withDragAndDrop
@@ -25,9 +19,6 @@ export default () => <EventProviderHOC>
       left: 'left'
     }, 'detect', 'direction')}
     view='week'
-    components={{
-      eventPopupView: eventPopup
-    }}
     date={new Date()}
   />
 </EventProviderHOC>
