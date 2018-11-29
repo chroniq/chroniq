@@ -25,7 +25,7 @@ class Toolbar extends React.PureComponent {
     window.addEventListener('resize', this.setPosition, false)
 
     this.setState({
-      portalRef: closest(findDOMNode(this.dropdownRef), '.chrnq-calendar'),
+      portalRef: (this.props.moveToolbarToRef) ? closest(findDOMNode(this.dropdownRef), '.chrnq-toolbar').parentNode : closest(findDOMNode(this.dropdownRef), '.chrnq-calendar'),
       isMounted: true
     }, this.setPosition)
   }
@@ -125,12 +125,18 @@ class Toolbar extends React.PureComponent {
 
   setPosition = () => {
     if (this.dropdownRef && this.state.open) {
-      let { top, left } = getPosition(this.dropdownRef, closest(findDOMNode(this.dropdownRef), '.chrnq-calendar').parentNode)
-
+      let dropDownMoveCoordinates = {}
+      if (this.props.moveToolbarToRef) {
+        const dropDownCoordinates = this.dropdownRef.getBoundingClientRect()
+        dropDownMoveCoordinates.left = dropDownCoordinates.left + dropDownCoordinates.width + 2
+        dropDownMoveCoordinates.top = dropDownCoordinates.top + dropDownCoordinates.height - 20
+      } else {
+        dropDownMoveCoordinates = getPosition(this.dropdownRef, closest(findDOMNode(this.dropdownRef), '.chrnq-calendar').parentNode)
+      }
       this.setState({
         popup: {
-          x: left,
-          y: top
+          x: dropDownMoveCoordinates.left,
+          y: dropDownMoveCoordinates.top
         }
       })
     }

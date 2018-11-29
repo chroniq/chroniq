@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
+import { createPortal } from 'react-dom'
 import Immutable from 'immutable'
 
 import HTML5Backend from 'react-dnd-html5-backend'
@@ -104,7 +105,8 @@ class Calendar extends React.PureComponent {
     'snapDuration',
     'enableEventPopup',
     'hoverOnEventPopup',
-    'eventPopupDirection'
+    'eventPopupDirection',
+    'moveToolbarToRef'
   ]
 
   dragAndDropSelector = (state, action) => {
@@ -386,14 +388,25 @@ class Calendar extends React.PureComponent {
     return (
       <Provider store={this.store}>
         <CalendarContainer isRtl={rtl} className={className} style={style}>
-          {toolbar &&
-            <CalendarToolbar
-              labelGenerators={Object.keys(views).reduce((result, view) => {
-                result[view] = views[view].title
-                return result
-              }, {})}
-            />
+          {
+            (this.props.moveToolbarToRef)
+              ? createPortal(
+                <CalendarToolbar
+                  moveToolbarToRef={this.props.moveToolbarToRef}
+                  labelGenerators={Object.keys(views).reduce((result, view) => {
+                    result[view] = views[view].title
+                    return result
+                  }, {})}
+                />, this.props.moveToolbarToRef)
+              : (toolbar &&
+              <CalendarToolbar
+                labelGenerators={Object.keys(views).reduce((result, view) => {
+                  result[view] = views[view].title
+                  return result
+                }, {})}
+              />)
           }
+
           <div style={{
             display: 'flex',
             flex: '0 1 100%',
