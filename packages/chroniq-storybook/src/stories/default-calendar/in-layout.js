@@ -22,12 +22,13 @@ class LayoutContainer extends React.Component {
       <Layout>
         <Sidebar />
         <ContentPane>
-          <Header innerRef={this.getRef} />
+          <Header id='header' />
           <Content>
             <Chroniq
-              moveToolbarToRef={this.state.headerRef}
+              toolbarTarget={'#header'}
               date={new Date(2016, 11, 4)}
               culture='de_DE'
+              resources={resources}
               events={[
                 {
                   id: 1,
@@ -69,7 +70,7 @@ const Layout = styled.div`
     width: 100%;
     display: flex;
     flex-direction: row;
-    background: #555;
+    background: white;
 `
 
 const Header = styled.div`
@@ -80,6 +81,7 @@ const Header = styled.div`
 
 const Sidebar = styled.div`
     display: flex;
+    flex-direction: column;
     flex: 0 0 220px;
     background: #3498db;
 `

@@ -65,6 +65,8 @@ import { prepareBusinessHours } from '../../models/businessHours.js'
 import { prepareEvents } from '../../models/event.js'
 import { prepareMessages } from '../../models/message.js'
 
+import ToolbarContainer from '../Toolbar/ToolbarContainer'
+
 function viewNames (_views) {
   return !length(_views) ? Object.keys(_views) : _views.map((view) => view.toString())
 }
@@ -106,7 +108,7 @@ class Calendar extends React.PureComponent {
     'enableEventPopup',
     'hoverOnEventPopup',
     'eventPopupDirection',
-    'moveToolbarToRef'
+    'resourceTabsTarget'
   ]
 
   dragAndDropSelector = (state, action) => {
@@ -388,25 +390,17 @@ class Calendar extends React.PureComponent {
     return (
       <Provider store={this.store}>
         <CalendarContainer isRtl={rtl} className={className} style={style}>
-          {
-            (this.props.moveToolbarToRef)
-              ? createPortal(
-                <CalendarToolbar
-                  moveToolbarToRef={this.props.moveToolbarToRef}
-                  labelGenerators={Object.keys(views).reduce((result, view) => {
-                    result[view] = views[view].title
-                    return result
-                  }, {})}
-                />, this.props.moveToolbarToRef)
-              : (toolbar &&
+          <ToolbarContainer toolbarTarget={this.props.toolbarTarget}>
+            {toolbar &&
               <CalendarToolbar
+                toolbarTarget={this.props.toolbarTarget}
                 labelGenerators={Object.keys(views).reduce((result, view) => {
                   result[view] = views[view].title
                   return result
                 }, {})}
-              />)
-          }
-
+              />
+            }
+          </ToolbarContainer>
           <div style={{
             display: 'flex',
             flex: '0 1 100%',

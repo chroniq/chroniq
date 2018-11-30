@@ -4,7 +4,7 @@ import { findDOMNode, createPortal } from 'react-dom'
 import moment from 'moment'
 
 import { connect } from '../../store/connect'
-import { classNames, closest, getPosition } from '../../utils/helpers'
+import { classNames, closest, getPosition, querySelectorAll } from '../../utils/helpers'
 import { navigate, setViewByName } from '../../store/actions'
 
 import MonthPicker from '../MonthPicker/MonthPicker.js'
@@ -23,9 +23,8 @@ class Toolbar extends React.PureComponent {
 
   componentDidMount () {
     window.addEventListener('resize', this.setPosition, false)
-
     this.setState({
-      portalRef: (this.props.moveToolbarToRef) ? closest(findDOMNode(this.dropdownRef), '.chrnq-toolbar').parentNode : closest(findDOMNode(this.dropdownRef), '.chrnq-calendar'),
+      portalRef: document.querySelector('body'),
       isMounted: true
     }, this.setPosition)
   }
@@ -126,13 +125,10 @@ class Toolbar extends React.PureComponent {
   setPosition = () => {
     if (this.dropdownRef && this.state.open) {
       let dropDownMoveCoordinates = {}
-      if (this.props.moveToolbarToRef) {
-        const dropDownCoordinates = this.dropdownRef.getBoundingClientRect()
-        dropDownMoveCoordinates.left = dropDownCoordinates.left + dropDownCoordinates.width + 2
-        dropDownMoveCoordinates.top = dropDownCoordinates.top + dropDownCoordinates.height - 20
-      } else {
-        dropDownMoveCoordinates = getPosition(this.dropdownRef, closest(findDOMNode(this.dropdownRef), '.chrnq-calendar').parentNode)
-      }
+      const dropDownCoordinates = this.dropdownRef.getBoundingClientRect()
+      dropDownMoveCoordinates.left = dropDownCoordinates.left - dropDownCoordinates.width + 1
+      dropDownMoveCoordinates.top = dropDownCoordinates.top + dropDownCoordinates.height
+
       this.setState({
         popup: {
           x: dropDownMoveCoordinates.left,
@@ -180,8 +176,8 @@ class Toolbar extends React.PureComponent {
       <div className='chrnq-popup-wrapper' style={{ display: this.state.open ? 'block' : 'none' }}>
         <div className='chrnq-popup-overlay' onClick={this.onClick} />
         <div className='chrnq-popup chrnq-popup-arrow--top' style={{
-          top: `${this.state.popup.y + 30}px`,
-          left: `${this.state.popup.x - 30}px`
+          top: `${this.state.popup.y}px`,
+          left: `${this.state.popup.x}px`
         }}>
           {
             this.state.open && <Component />
