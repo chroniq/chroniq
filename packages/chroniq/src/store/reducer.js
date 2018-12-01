@@ -73,7 +73,7 @@ const onOpenDrillDownView = (state, action) => {
 }
 
 const onDateChange = (state, action) => {
-  return state.setIn([ 'props', 'date' ], action.payload)
+  return state.setIn([ 'props', 'date' ], action.payload.date)
 }
 
 const onViewChange = (state, action) => {

@@ -61,7 +61,10 @@ export const navigate = (target) => (dispatch, getState) => {
   if (navigate.viewIsRegistered(view)) {
     dispatch({
       type: NAVIGATE_ACTION,
-      payload: navigate.calculateNewDate(view, date, target)
+      payload: {
+        date: navigate.calculateNewDate(view, date, target),
+        state
+      }
     })
 
     return
@@ -71,28 +74,40 @@ export const navigate = (target) => (dispatch, getState) => {
     case navigate.TODAY:
       dispatch({
         type: NAVIGATE_ACTION,
-        payload: new Date()
+        payload: {
+          date: new Date(),
+          state
+        }
       })
       break
 
     case navigate.PREVIOUS:
       dispatch({
         type: NAVIGATE_ACTION,
-        payload: dates.add(date, -1, view)
+        payload: {
+          date: dates.add(date, -1, view),
+          state
+        }
       })
       break
 
     case navigate.NEXT:
       dispatch({
         type: NAVIGATE_ACTION,
-        payload: dates.add(date, 1, view)
+        payload: {
+          date: dates.add(date, 1, view),
+          state
+        }
       })
       break
 
     default:
       dispatch({
         type: NAVIGATE_ACTION,
-        payload: target
+        payload: {
+          date: target,
+          state
+        }
       })
   }
 }
