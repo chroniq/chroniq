@@ -1,6 +1,6 @@
 {
 	"name": "@chroniq/chroniq-layout-strategy-default",
-	"version": "0.2.1-0",
+	"version": "0.2.2-0",
 	"description": "storybook for chroniq",
 	"author": "Christian Birg <cbirg@incoqnito.de>",
 	"contributors": [
@@ -53,6 +53,6 @@
 		"stylus": "^0.54.5"
 	},
 	"dependencies": {
-		"@chroniq/chroniq": "^0.2.1-0"
+		"@chroniq/chroniq": "^0.2.2-0"
 	}
 }
