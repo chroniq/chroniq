@@ -1,6 +1,6 @@
 {
 	"name": "@chroniq/chroniq-view-week",
-	"version": "0.2.0-0",
+	"version": "0.2.1-0",
 	"description": "storybook for chroniq",
 	"author": "Christian Birg <cbirg@incoqnito.de>",
 	"contributors": [
@@ -43,7 +43,7 @@
 		"react-dom": "^15.3.0 || ^16.0.0"
 	},
 	"dependencies": {
-		"@chroniq/chroniq": "^0.2.0-0"
+		"@chroniq/chroniq": "^0.2.1-0"
 	},
 	"devDependencies": {
 		"babel-cli": "^6.7.5",
