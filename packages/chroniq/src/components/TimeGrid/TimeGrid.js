@@ -24,6 +24,8 @@ class TimeGrid extends React.PureComponent {
       gutterWidth: undefined,
       isOverflowing: null
     }
+
+    this.timeContentRef = null
   }
 
   componentWillMount () {
@@ -158,6 +160,7 @@ class TimeGrid extends React.PureComponent {
           style={style}
           key={key}
           layoutStrategies={this.props.layoutStrategies}
+          timeContentRef={this.contentRef}
         />
       )
     })

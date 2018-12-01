@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
+import { createPortal } from 'react-dom'
 import Immutable from 'immutable'
 
 import HTML5Backend from 'react-dnd-html5-backend'
@@ -64,6 +65,8 @@ import { prepareBusinessHours } from '../../models/businessHours.js'
 import { prepareEvents } from '../../models/event.js'
 import { prepareMessages } from '../../models/message.js'
 
+import ToolbarContainer from '../Toolbar/ToolbarContainer'
+
 function viewNames (_views) {
   return !length(_views) ? Object.keys(_views) : _views.map((view) => view.toString())
 }
@@ -101,7 +104,11 @@ class Calendar extends React.PureComponent {
     'culture',
     'joinedResources',
     'activeResources',
-    'snapDuration'
+    'snapDuration',
+    'enableEventPopup',
+    'hoverOnEventPopup',
+    'eventPopupDirection',
+    'resourceTabsTarget'
   ]
 
   dragAndDropSelector = (state, action) => {
@@ -117,29 +124,30 @@ class Calendar extends React.PureComponent {
     const resourceId = state.getIn([ 'dnd', 'resourceId' ])
 
     const affectedEventIds = state.getIn([ 'dnd', 'previews' ])
-    return affectedEventIds
-      .map((id) => {
-        const event = this.props.events.find((event) => get(event, accessors.event.id) === id)
+    const affectedEvents = affectedEventIds.map((id) => {
+      const event = this.props.events.find((event) => get(event, accessors.event.id) === id)
+      const start = dates.add(get(event, accessors.event.start), startOffset, 'minutes')
+      const end = dates.add(get(event, accessors.event.end), endOffset, 'minutes')
 
-        const start = dates.add(get(event, accessors.event.start), startOffset, 'minutes')
-        const end = dates.add(get(event, accessors.event.end), endOffset, 'minutes')
+      return {
+        ...event,
+        resourceId: resourceId === originalResourceId ? get(event, accessors.event.resourceId) : resourceId,
+        start,
+        end: start < end ? end : dates.add(start, step, 'minutes')
+      }
+    })
 
-        return {
-          id,
-          resourceId: resourceId === originalResourceId ? get(event, accessors.event.resourceId) : resourceId,
-          start,
-          end: start < end ? end : dates.add(start, step, 'minutes'),
-          event
-        }
-      })
-      .toArray()
+    return {
+      events: affectedEvents.toArray(),
+      state: state.toJS().props
+    }
   }
 
   handlerToActionMapping = {
     'onSelectEvent': {
       controlledProp: 'selectedEvents',
       actions: [ SELECT_EVENT_ACTION ],
-      selector: (state) => getSelectedEvents(state).toJS(),
+      selector: (state) => getSelectedEvents(state),
       controlled: {
         selector: null
       }
@@ -379,18 +387,20 @@ class Calendar extends React.PureComponent {
     const views = this.getViews()
 
     let CalendarToolbar = components.toolbar || Toolbar
-
     return (
       <Provider store={this.store}>
         <CalendarContainer isRtl={rtl} className={className} style={style}>
-          {toolbar &&
-            <CalendarToolbar
-              labelGenerators={Object.keys(views).reduce((result, view) => {
-                result[view] = views[view].title
-                return result
-              }, {})}
-            />
-          }
+          <ToolbarContainer toolbarTarget={this.props.toolbarTarget}>
+            {toolbar &&
+              <CalendarToolbar
+                toolbarTarget={this.props.toolbarTarget}
+                labelGenerators={Object.keys(views).reduce((result, view) => {
+                  result[view] = views[view].title
+                  return result
+                }, {})}
+              />
+            }
+          </ToolbarContainer>
           <div style={{
             display: 'flex',
             flex: '0 1 100%',

@@ -11,6 +11,7 @@ export default () => <EventProviderHOC>
     onSelectEvent={action('event selected (IDs of selected events)')}
     onEventDrop={action('event dropped')}
     onEventResize={action('event resized')}
+    onEventResizeBegin={action('events onResizeBegin')}
     defaultDate={new Date()}
   />
 </EventProviderHOC>

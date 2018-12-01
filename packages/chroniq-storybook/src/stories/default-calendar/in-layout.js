@@ -2,41 +2,65 @@ import React from 'react'
 import styled from 'styled-components'
 import Chroniq from '@chroniq/chroniq/lib'
 
+class LayoutContainer extends React.Component {
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      headerRef: null
+    }
+  }
+
+  getRef = (headerRef) => {
+    if (!this.state.headerRef) {
+      this.setState({ headerRef })
+    }
+  }
+
+  render () {
+    return (
+      <Layout>
+        <Sidebar />
+        <ContentPane>
+          <Header id='header' />
+          <Content>
+            <Chroniq
+              toolbarTarget={'#header'}
+              date={new Date(2016, 11, 4)}
+              culture='de_DE'
+              resources={resources}
+              events={[
+                {
+                  id: 1,
+                  title: 'start of the week',
+                  start: new Date(2016, 11, 4, 15),
+                  end: new Date(2016, 11, 5, 3),
+                  color: '#be2edd'
+                },
+                {
+                  id: 2,
+                  title: 'end of the week',
+                  start: new Date(2016, 11, 3),
+                  end: new Date(2016, 11, 3)
+                },
+                {
+                  id: 3,
+                  title: 'middle',
+                  start: new Date(2016, 11, 6),
+                  end: new Date(2016, 11, 6)
+                }
+              ]}
+            />
+          </Content>
+        </ContentPane>
+      </Layout>
+    )
+  }
+}
+
 export default () => {
   return (
-    <Layout>
-      <Sidebar />
-      <ContentPane>
-        <Header />
-        <Content>
-          <Chroniq
-            date={new Date(2016, 11, 4)}
-            culture='de_DE'
-            events={[
-              {
-                id: 1,
-                title: 'start of the week',
-                start: new Date(2016, 11, 4, 15),
-                end: new Date(2016, 11, 5, 3),
-                color: '#be2edd'
-              },
-              {
-                id: 2,
-                title: 'end of the week',
-                start: new Date(2016, 11, 3),
-                end: new Date(2016, 11, 3)
-              },
-              {
-                id: 3,
-                title: 'middle',
-                start: new Date(2016, 11, 6),
-                end: new Date(2016, 11, 6)
-              }
-            ]}
-          />
-        </Content>
-      </ContentPane>
-    </Layout>
+    <LayoutContainer />
   )
 }
 
@@ -46,17 +70,18 @@ const Layout = styled.div`
     width: 100%;
     display: flex;
     flex-direction: row;
-    background: #555;
+    background: white;
 `
 
 const Header = styled.div`
-    flex: 0 0 50px;
+    flex: 0 0 80px;
     border-bottom: 1px solid #ddd;
-    height: 50px;
+    height: 80px;
 `
 
 const Sidebar = styled.div`
     display: flex;
+    flex-direction: column;
     flex: 0 0 220px;
     background: #3498db;
 `

@@ -4,7 +4,7 @@ import { findDOMNode, createPortal } from 'react-dom'
 import moment from 'moment'
 
 import { connect } from '../../store/connect'
-import { classNames, closest, getPosition } from '../../utils/helpers'
+import { classNames, closest, getPosition, querySelectorAll } from '../../utils/helpers'
 import { navigate, setViewByName } from '../../store/actions'
 
 import MonthPicker from '../MonthPicker/MonthPicker.js'
@@ -21,13 +21,10 @@ class Toolbar extends React.PureComponent {
     }
   }
 
-  componentWillMount () {
-    window.addEventListener('resize', this.setPosition, false)
-  }
-
   componentDidMount () {
+    window.addEventListener('resize', this.setPosition, false)
     this.setState({
-      portalRef: closest(findDOMNode(this.dropdownRef), '.chrnq-calendar'),
+      portalRef: document.querySelector('body'),
       isMounted: true
     }, this.setPosition)
   }
@@ -127,12 +124,15 @@ class Toolbar extends React.PureComponent {
 
   setPosition = () => {
     if (this.dropdownRef && this.state.open) {
-      let { top, left } = getPosition(this.dropdownRef, closest(findDOMNode(this.dropdownRef), '.chrnq-calendar').parentNode)
+      let dropDownMoveCoordinates = {}
+      const dropDownCoordinates = this.dropdownRef.getBoundingClientRect()
+      dropDownMoveCoordinates.left = dropDownCoordinates.left - dropDownCoordinates.width + 1
+      dropDownMoveCoordinates.top = dropDownCoordinates.top + dropDownCoordinates.height
 
       this.setState({
         popup: {
-          x: left,
-          y: top
+          x: dropDownMoveCoordinates.left,
+          y: dropDownMoveCoordinates.top
         }
       })
     }
@@ -176,8 +176,8 @@ class Toolbar extends React.PureComponent {
       <div className='chrnq-popup-wrapper' style={{ display: this.state.open ? 'block' : 'none' }}>
         <div className='chrnq-popup-overlay' onClick={this.onClick} />
         <div className='chrnq-popup chrnq-popup-arrow--top' style={{
-          top: `${this.state.popup.y + 30}px`,
-          left: `${this.state.popup.x - 30}px`
+          top: `${this.state.popup.y}px`,
+          left: `${this.state.popup.x}px`
         }}>
           {
             this.state.open && <Component />

@@ -24,24 +24,27 @@ export const onSelectEvent = (event, accessors, mouseEvent) => {
 }
 
 export const DOUBLE_CLICK_EVENT_ACTION = 'DOUBLE_CLICK_EVENT'
-export const onDoubleClickEvent = (event, accessors, mouseEvent) => {
-  return {
+export const onDoubleClickEvent = (event, accessors, mouseEvent) => (dispatch, getState) => {
+  const state = getState()
+  return dispatch({
     type: DOUBLE_CLICK_EVENT_ACTION,
     payload: {
-      eventId: get(event, accessors.id),
-      resourceId: get(event, accessors.resourceId)
+      event,
+      state: state.toJS().props
     }
-  }
+  })
 }
 
 export const SELECT_BACKGROUND_EVENT_ACTION = 'SELECT_BACKGROUND_EVENT'
-export const onSelectBackgroundEvent = (event, accessors) => ({
-  type: SELECT_BACKGROUND_EVENT_ACTION,
-  payload: {
-    eventId: get(event, accessors.id),
-    resourceId: get(event, accessors.resourceId)
-  }
-})
+export const onSelectBackgroundEvent = (event, accessors) => (dispatch, getState) => {
+  dispatch({
+    type: SELECT_BACKGROUND_EVENT_ACTION,
+    payload: {
+      event,
+      state: getState().toJS().props
+    }
+  })
+}
 
 export const OPEN_DRILLDOWN_VIEW_ACTION = 'OPEN_DRILLDOWN_VIEW'
 export const openDrilldownView = (date) => ({
@@ -110,15 +113,23 @@ export const setViewByName = (viewName) => (dispatch, getState) => {
 
   dispatch({
     type: SET_VIEW_ACTION,
-    payload: views[viewNames.findIndex((name) => name === viewName)].toString()
+    payload: {
+      view: views[viewNames.findIndex((name) => name === viewName)].toString(),
+      state: state.toJS().props
+    }
   })
 }
 
 export const SELECT_SLOT_ACTION = 'SELECT_SLOT'
-export const onSelectSlot = (slotInfo) => {
-  return ({
+export const onSelectSlot = (slotInfo) => (dispatch, getState) => {
+  const state = getState()
+
+  return dispatch({
     type: SELECT_SLOT_ACTION,
-    payload: slotInfo
+    payload: {
+      ...slotInfo,
+      state: state.toJS().props
+    }
   })
 }
 
@@ -192,6 +203,7 @@ export const onEventDragBegin = (data, accessors) =>
       type: EVENT_DRAG_BEGIN_ACTION,
       payload: {
         ...data,
+        state: state.toJS().props,
         multiResource
       }
     })
@@ -206,11 +218,15 @@ export const setDragItemOverCalendar = (isOver) => {
 }
 
 export const EVENT_RESIZE_BEGIN_ACTION = 'EVENT_RESIZE_BEGIN'
-export const onEventResizeBegin = (data) => {
-  return {
+export const onEventResizeBegin = (data) => (dispatch, getState) => {
+  const state = getState()
+  return dispatch({
     type: EVENT_RESIZE_BEGIN_ACTION,
-    payload: data
-  }
+    payload: {
+      ...data,
+      state: state.toJS().props
+    }
+  })
 }
 
 export const EVENT_RESIZING_ACTION = 'EVENT_RESIZING'

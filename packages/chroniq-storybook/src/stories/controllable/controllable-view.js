@@ -4,15 +4,17 @@ import { withNotes } from '@storybook/addon-notes'
 import Chroniq from '@chroniq/chroniq/lib'
 import createEvents from '../../utils/createEvents'
 
+import { action } from '@storybook/addon-actions'
+
 const events = createEvents()
 
 class DefaultView extends React.Component {
   state = {
     view: 'week'
   }
-  onChangeView = (view) => {
+  onChangeView = (data) => {
     this.setState({
-      view
+      view: data.view
     })
   }
   render () {

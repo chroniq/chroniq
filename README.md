@@ -31,16 +31,19 @@ type Props = {
      * view properties
      * */
     view: string,
-    onViewChange: Function,
-    views: Array<"month" | "week" | "day" | "agenda" | string>,
+    onViewChange?: () => {
+       view: string,
+       state: <Object> 
+    },
+    views: Array<["month", "week", "day", "agenda"] string>,
     /*
      * date & time properties
      * */
     date: Date,
-    onDateChange: Function,
-    minTime: Duration,
-    maxTime: Duration,
-    scrollTime: Duration,
+    onDateChange?: () => Array<Date>,
+    minTime: Date,
+    maxTime: Date,
+    scrollTime: Date,
     slotDuration: number,
     slotInterval: number,
     /*
@@ -52,20 +55,23 @@ type Props = {
      * events
      * */
     events: Array<Event>,
-    onSelectEvent?: Function,
+    onSelectEvent?: () => Array<Event>,
     /*
      * resource
      * */
     resources?: Array<Resource>,
-    joinedResources: Array<Resource.id>,
-    onChangeJoinedResources: Function,
-    activeResources: Array<Resource.id>,
-    onChangeActiveResources: Function,
+    joinedResources: Array<number | string>,
+    onChangeJoinedResources?: () => ,
+    activeResources: Array<number | string>,
+    onChangeActiveResources?: () => ,
     /*
      * background events
      * */
     backgroundEvents?: Array<BackgroundEvent>,
-    onSelectBackgroundEvent?: Function,
+    onSelectBackgroundEvent?: () => {
+        event: <Event>,
+        state: <Object>
+    },
     /*
      * business hours
      * */
@@ -73,16 +79,42 @@ type Props = {
     /*
      * drag & drop and resize
      * */
-    onEventDrag?: Function,
-    onEventDragBegin?: Function,
-    onEventDrop?: Function,
-    onEventResize?: Function,
-    snapDuration?: Duration, // must be implemented
+    onEventDrag?: () => {
+        events: Array<Event>,
+        state: <Object>
+    },
+    onEventDragBegin?: () => {
+        event: <Event>,
+        state: <Object>,
+        id: number | string,
+        resourceId: number | string,
+        start: Date,
+        end: Date
+    },
+    onEventDrop?: () => {
+        events: Array<Event>,
+        state: <Object>
+    },
+    onEventResize?: () => {
+        events: Array<Event>,
+        state: <Object>
+    },
+    snapDuration?: Date, // must be implemented
     /*
      * selection
      * */
-    selectedEvents: Array<Event.id>,
-    onSelectSlot?: Function,
+    selectedEvents: Array<number | string>,
+    onSelectSlot?: () => {
+        state: <Object>,
+        action: "select" | "click",
+        start: Date,
+        end: Date,
+        resources: Array<{
+            color: string,
+            id: number | string
+        }>,
+        slots: Array<Date>
+    },
     /*
      * accessors
      * */
@@ -146,16 +178,16 @@ type Props = {
         weekdayFormat: string,
         timeGutterFormat: string,
         monthHeaderFormat: string,
-        dayRangeHeaderFormat: Function,
+        dayRangeHeaderFormat: ({ start: Date, end: Date }, culture: string, local: Date): Date,
         dayHeaderFormat: string,
         agendaHeaderFormat: string,
-        selectRangeFormat: Function,
+        selectRangeFormat: ({ start: Date, end: Date }, culture: string, local: Date): Date,
         agendaDateFormat: string,
         agendaTimeFormat: string,
-        agendaTimeRangeFormat: Function,
-        eventTimeRangeFormat: Function,
-        eventTimeRangeStartFormat: Function,
-        eventTimeRangeEndFormat: Function
+        agendaTimeRangeFormat: ({ start: Date, end: Date }, culture: string, local: Date): Date,
+        eventTimeRangeFormat: ({ start: Date, end: Date }, culture: string, local: Date): Date,
+        eventTimeRangeStartFormat: ({ start: Date, end: Date }, culture: string, local: Date): Date,
+        eventTimeRangeEndFormat: ({ start: Date, end: Date }, culture: string, local: Date): Date
     },
     /*
      * messages
@@ -188,7 +220,10 @@ type Props = {
      * deprecated props (will be removed asap)
      * */
     longPressThreshold: number,
-    onDoubleClickEvent: Function
+    onDoubleClickEvent: () => {
+        event: <Event>,
+        state: <Object>
+    }
 }
 ```
 
@@ -203,13 +238,14 @@ type Event = {
     end: Date,
     allDay?: boolean,
     color?: string,
-    resourceId?: number | string
+    resourceId?: number | string | Array<number> | Array<string>
 }
 ```
 ## Background Event
 ```typescript
 type BackgroundEvent = {
     id: number | string,
+    title: string,
     start: Date,
     end: Date,
     color?: string,
@@ -220,8 +256,8 @@ type BackgroundEvent = {
 ```typescript
 type BusinessHour = {
     days: Array<number>,
-    from: Duration,
-    to: Duration
+    from: Date,
+    to: date
 }
 ```
 ## Resource
