@@ -2,6 +2,10 @@
 .chrnq-resource-tab {
   display: flex;
   flex: 0 0 auto;
+  &.--is-portaled {
+    flex-direction: column;
+    margin-bottom: 5px;
+  }
 }
 
 .chrnq-resource-sheet-area {
@@ -15,9 +19,9 @@
 
 .chrnq-resource-tab-item {
   display: flex;
-  flex: 1 1 0;
+  flex: 0 1 auto;
   position: relative;
-  max-width: 80px;
+  max-width: none;
   margin: 1px;
   margin-bottom: 0;
   margin-left: 0px;
@@ -41,9 +45,10 @@
       font-weight: bold;
     }
   }
+  &.--is-unpin-all {
+    padding-right: 8px;
+  }
   &:not(.--is-pinned) {
-    max-width: none;
-    flex: 0 1 auto;
     background: #f1f1f1;
     .chrnq-resource-pin svg {
       transform: rotate(-45deg);
@@ -59,6 +64,7 @@
     white-space: nowrap;
     overflow: hidden;
     user-select: none;
+    align-self: center;
 
     &.--is-pinned {
       &:hover {
@@ -81,4 +87,10 @@
       padding: 4px 0;
     }
   }
+}
+
+.chrnq-resource-tabs-portaled-container {
+  display: flex;
+  flex: 0, 0, auto;
+  flex-direction: column;
 }

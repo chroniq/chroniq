@@ -92,7 +92,8 @@ class TimeGrid extends React.PureComponent {
       width,
       onScroll,
       setScrollRef,
-      now
+      now,
+      showGutter
     } = this.props
 
     const {
@@ -118,25 +119,29 @@ class TimeGrid extends React.PureComponent {
           setScrollRef && setScrollRef(ref)
         }}>
           <div ref={this.setTimeIndicatorRef} className='chrnq-current-time-indicator' />
-
-          <TimeColumn
-            showLabels
-            accessors={this.props.accessors}
-            resources={this.props.resources}
-            components={this.props.components}
-            minTime={minTime}
-            maxTime={maxTime}
-            slotDuration={slotDuration}
-            slotInterval={slotInterval}
-            style={{ width }}
-            innerRef={(ref) => {
-              gutterRef(ref)
-              this.props.setTimeScaleRef(ref)
-            }}
-            now={now}
-            isLegend
-            className='chrnq-time-gutter'
-          />
+          {
+            // Show gutter column only if it is first View box
+            showGutter && (
+              <TimeColumn
+                showLabels
+                accessors={this.props.accessors}
+                resources={this.props.resources}
+                components={this.props.components}
+                minTime={minTime}
+                maxTime={maxTime}
+                slotDuration={slotDuration}
+                slotInterval={slotInterval}
+                style={{ width }}
+                innerRef={(ref) => {
+                  gutterRef(ref)
+                  this.props.setTimeScaleRef(ref)
+                }}
+                now={now}
+                isLegend
+                className='chrnq-time-gutter'
+              />
+            )
+          }
 
           { this.renderEvents(this.props.range, this.props.now) }
 
@@ -168,7 +173,7 @@ class TimeGrid extends React.PureComponent {
 
   renderHeader (range, width) {
     const { messages, rtl } = this.props.redux
-    let { now } = this.props
+    let { now, showGutter } = this.props
     let { isOverflowing } = this.state || {}
 
     let style = {}
@@ -186,7 +191,8 @@ class TimeGrid extends React.PureComponent {
       >
         <div className='chrnq-row'>
           {
-            (
+            // Show first cell of time in header (Ganztägig) only if it is first View box
+            showGutter && (
               <div
                 className='chrnq-header'
                 style={{ width }}
@@ -197,7 +203,8 @@ class TimeGrid extends React.PureComponent {
         </div>
         <div className='chrnq-row'>
           {
-            (
+            // Render gutter column with time only if it is first View box
+            showGutter && (
               <div
                 ref={ref => {
                   this._gutters[0] = ref
@@ -337,13 +344,22 @@ class TimeGrid extends React.PureComponent {
     const factor = secondsPassed / secondsGrid
     const timeGutter = this._gutters[this._gutters.length - 1]
 
-    if (timeGutter && now >= minTime && now <= maxTime) {
-      const pixelHeight = timeGutter.offsetHeight
+    if (now >= minTime && now <= maxTime) {
+      // Set up height if gutter does not exist
+      let pixelHeight = 960
+      let offsetWidth = 0
+
+      if (timeGutter) {
+        // Get height of an existing gutter column
+        pixelHeight = timeGutter.offsetHeight
+        offsetWidth = timeGutter.offsetWidth
+      }
+
       const offset = Math.floor(factor * pixelHeight)
 
       timeIndicator.style.display = 'block'
       timeIndicator.style[rtl ? 'left' : 'right'] = 0
-      timeIndicator.style[rtl ? 'right' : 'left'] = timeGutter.offsetWidth + 'px'
+      timeIndicator.style[rtl ? 'right' : 'left'] = offsetWidth + 'px'
       timeIndicator.style.top = offset + 'px'
     }
   }

@@ -15,6 +15,7 @@ class Day extends React.PureComponent {
 
     return (
       <TimeGrid
+        showGutter={this.props.showGutter}
         range={[dates.startOf(date, 'day')]}
         eventOffset={10}
         accessors={this.props.accessors}

@@ -3,10 +3,11 @@ import PropTypes from 'prop-types'
 
 import { connect } from '../../store/connect'
 import { getJoinedResources, getActiveResources } from '../../store/selectors'
-import { joinResource, splitResource, activateResource, deactivateResource, activateAllResources } from '../../store/actions'
+import { joinResource, splitResource, activateResource, deactivateResource, activateAllResources, unpinAllResources } from '../../store/actions'
 import { get, length, toArray } from '@chroniq/chroniq-accessor-helpers'
 import { viewNames, viewComponents } from '../../utils/views'
 import ResourceTabs from '../ResourceTabs/ResourceTabs'
+import ResourceTabsContainer from '../ResourceTabs/ResourceTabsContainer'
 
 class MainView extends React.PureComponent {
   generateTabAction = (resourceCount) => resourceCount > 1
@@ -52,7 +53,9 @@ class MainView extends React.PureComponent {
     const {
       joinedResources,
       resources,
-      view
+      view,
+      resourceTabsTarget,
+      unpinAllResources
     } = this.props.redux
 
     const maybeComponents = viewComponents(components, view, viewNames(views))
@@ -69,12 +72,28 @@ class MainView extends React.PureComponent {
       ]
       : []
 
+    // Getting resources which are not joined (Pinned), concat it with array of joined resources
+    const resourcesWithoutJoined = toArray(resources.filter((resource) => !joinedResources.some((resourceId) => get(resource, accessors.resource.id) === resourceId)))
+    const allResources = allJoinedResources.concat(resourcesWithoutJoined)
+
     return (
       <div className='chrnq-resource-sheet-area'>
         {
+          // Render Resources in Container to portal it to Sidebar element
+          resourceTabsTarget &&
+            <ResourceTabsContainer
+              resourceTabsTarget={resourceTabsTarget}
+              allResources={allResources}
+              onlyDefaultResource={onlyDefaultResource}
+              accessors={accessors}
+              onSplit={this.generateTabAction}
+              onActivate={this.onActivate}
+              activeResources={this.props.redux.activeResources}
+              unpinAllResources={unpinAllResources} />
+        }
+        {
           View.allowResources
-            ? allJoinedResources
-              .concat(toArray(resources.filter((resource) => !joinedResources.some((resourceId) => get(resource, accessors.resource.id) === resourceId))))
+            ? allResources
               .map((resources, index) => {
                 if (!length(resources)) {
                   resources = [ resources ]
@@ -88,10 +107,13 @@ class MainView extends React.PureComponent {
                 return (
                   <div className='chrnq-view-container' key={key}>
                     {
-                      onlyDefaultResource
+                      // Don't render here if there is only one resource or selector of Sidebar is set up
+                      (onlyDefaultResource || resourceTabsTarget)
                         ? null
                         : (
                           <ResourceTabs
+                            drawUnpinButton={index === 0}
+                            unpinAllResources={unpinAllResources}
                             accessors={accessors}
                             resources={resources}
                             onSplit={this.generateTabAction(length(resources))}
@@ -101,6 +123,7 @@ class MainView extends React.PureComponent {
                         )
                     }
                     <View
+                      showGutter={index === 0}
                       resources={resources}
                       components={maybeComponents}
                       accessors={accessors}
@@ -165,7 +188,8 @@ const mapStateToProps = (state) => ({
   joinedResources: getJoinedResources(state),
   resources: state.getIn([ 'props', 'resources' ]),
   view: state.getIn([ 'props', 'view' ]),
-  activeResources: getActiveResources(state)
+  activeResources: getActiveResources(state),
+  resourceTabsTarget: state.getIn([ 'props', 'resourceTabsTarget' ])
 })
 
 const mapDispatchToProps = {
@@ -173,7 +197,8 @@ const mapDispatchToProps = {
   splitResource,
   activateResource,
   deactivateResource,
-  activateAllResources
+  activateAllResources,
+  unpinAllResources
 }
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => ({

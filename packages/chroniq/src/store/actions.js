@@ -272,3 +272,10 @@ export const activateAllResources = () => {
     type: ACTIVATE_ALL_RESOURCES_ACTION
   }
 }
+
+export const UNPIN_ALL_RESOURCES_ACTION = 'UNPIN_ALL_RESOURCES_ACTION'
+export const unpinAllResources = () => {
+  return {
+    type: UNPIN_ALL_RESOURCES_ACTION
+  }
+}

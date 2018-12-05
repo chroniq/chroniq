@@ -49,19 +49,19 @@ const events = [
 const resources = [
   {
     id: 1,
-    title: 'David'
+    title: 'Vivienne Thompson-Simmons'
   },
   {
     id: 2,
-    title: 'Tim'
+    title: 'Genevieve Washington-Henderson'
   },
   {
     id: 3,
-    title: 'Oleksandr'
+    title: 'Charlotte Richardson'
   },
   {
     id: 4,
-    title: 'Michael'
+    title: 'Anastasia Anderson'
   }
 ]
 

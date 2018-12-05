@@ -12,6 +12,8 @@ stories
     require('./multiple-instances.js').default)
   .add('in-layout',
     require('./in-layout.js').default)
+  .add('in-layout sidebar',
+    require('./in-layout-sidebar.js').default)
 
   .add('selectable',
     require('./selectable.js').default)

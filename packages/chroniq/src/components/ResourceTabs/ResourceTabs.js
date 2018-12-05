@@ -13,13 +13,32 @@ class ResourceTabs extends React.PureComponent {
   }
   render () {
     let {
-      accessors
+      accessors,
+      resourceTabsTarget,
+      resources,
+      drawUnpinButton,
+      unpinAllResources
     } = this.props
 
     return (
-      <div className='chrnq-resource-tab'>
+      <div className={classNames({
+        'chrnq-resource-tab': true,
+        '--is-portaled': resourceTabsTarget
+      })} >
         {
-          this.props.resources.map((resource) => {
+          // Rendering unpinAll button only in first View container and if amount of resources bigger than 2
+          (drawUnpinButton && length(resources) > 2) && (
+            <div className={classNames('chrnq-resource-tab-item', '--is-unpin-all')}>
+              <span
+                className={classNames('chrnq-resource-tab-item-content', '--is-pinned')}
+                onClick={unpinAllResources}>
+                {'Unpin All'}
+              </span>
+            </div>
+          )
+        }
+        {
+          resources.map((resource) => {
             let color = get(resource, accessors.resource.color)
             let title = get(resource, accessors.resource.title)
             let id = get(resource, accessors.resource.id)

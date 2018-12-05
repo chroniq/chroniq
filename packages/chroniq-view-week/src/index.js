@@ -10,12 +10,13 @@ import { getDate } from '@chroniq/chroniq/lib/store/selectors'
 
 class WeekView extends React.PureComponent {
   render () {
-    const { accessors } = this.props
+    const { accessors, showGutter } = this.props
     const { date } = this.props.redux
     let range = (this.props.getRange && this.props.getRange(date)) || WeekView.range(date, accessors)
 
     return (
       <TimeGrid
+        showGutter={showGutter}
         accessors={accessors}
         components={this.props.components}
         resources={this.props.resources}

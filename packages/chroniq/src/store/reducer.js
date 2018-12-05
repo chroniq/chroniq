@@ -14,6 +14,7 @@ import {
   ACTIVATE_RESOURCE_ACTION,
   DEACTIVATE_RESOURCE_ACTION,
   ACTIVATE_ALL_RESOURCES_ACTION,
+  UNPIN_ALL_RESOURCES_ACTION,
   EVENT_DRAG_BEGIN_ACTION,
   EVENT_DRAG_ACTION,
   EVENT_DRAG_OVER_CALENDAR_CHANGE_ACTION,
@@ -219,6 +220,10 @@ const onEventDrop = (state, action) => state.setIn([ 'dnd', 'isDragging' ], fals
 
 const getDefaultState = () => Map()
 
+const unpinAllResources = (state) => {
+  return state.setIn([ 'props', 'joinedResources' ], [])
+}
+
 export default handleActions({
   [UPDATE_PROPS_ACTION]: onUpdateProps,
   [SELECT_EVENT_ACTION]: onSelectEvent,
@@ -230,6 +235,7 @@ export default handleActions({
   [ACTIVATE_RESOURCE_ACTION]: activateResource,
   [DEACTIVATE_RESOURCE_ACTION]: deactivateResource,
   [ACTIVATE_ALL_RESOURCES_ACTION]: activateAllResources,
+  [UNPIN_ALL_RESOURCES_ACTION]: unpinAllResources,
   [EVENT_DRAG_BEGIN_ACTION]: onEventDragBegin,
   [EVENT_DRAG_ACTION]: onEventDrag,
   [EVENT_DRAG_OVER_CALENDAR_CHANGE_ACTION]: onEventDragChangeIsOver,
