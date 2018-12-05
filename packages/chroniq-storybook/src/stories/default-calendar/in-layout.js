@@ -28,6 +28,7 @@ class LayoutContainer extends React.Component {
               toolbarTarget={'#header'}
               date={new Date(2016, 11, 4)}
               culture='de_DE'
+              resources={resources}
               events={[
                 {
                   id: 1,
@@ -79,8 +80,10 @@ const Header = styled.div`
 `
 
 const Sidebar = styled.div`
-    width: 220px;
-    background: white;
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 220px;
+    background: #3498db;
 `
 
 const ContentPane = styled.div`
