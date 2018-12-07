@@ -22,7 +22,8 @@ class TimeGrid extends React.PureComponent {
 
     this.state = {
       gutterWidth: undefined,
-      isOverflowing: null
+      isOverflowing: null,
+      autoScrolled: false
     }
 
     this.timeContentRef = null
@@ -327,7 +328,12 @@ class TimeGrid extends React.PureComponent {
   }
 
   positionTimeIndicator () {
-    const { rtl, minTime, maxTime } = this.props.redux
+    const { 
+      rtl, 
+      minTime, 
+      maxTime,
+      autoScrollToFirstEvent
+    } = this.props.redux
     const now = new Date()
 
     const secondsGrid = dates.diff(maxTime, minTime, 'seconds')
@@ -345,7 +351,27 @@ class TimeGrid extends React.PureComponent {
       timeIndicator.style[rtl ? 'left' : 'right'] = 0
       timeIndicator.style[rtl ? 'right' : 'left'] = timeGutter.offsetWidth + 'px'
       timeIndicator.style.top = offset + 'px'
+
+      // Autoscrolling to first event
+      if (!this.state.autoScrolled && timeGutter && autoScrollToFirstEvent) {
+        this.autoScroll(pixelHeight, maxTime, minTime)
+        this.setState({ autoScrolled: true })
+      }
     }
+  }
+
+  // Autoscrolling calculations
+  autoScroll = (viewHeight, maxTime, minTime) => {
+    let events = this.props.redux.events
+    // Finding an event with lower start date
+    events.sort((a, b) => new Date(a.start) - new Date(b.start))
+    const minutesToEvent= dates.diff(events[0].start, minTime, 'minutes')
+    const diffMinMax = dates.diff(maxTime, minTime, 'minutes')
+    const pixelPerMinute = viewHeight / diffMinMax
+    // Calculating amount of pixels to first event
+    const moveToOffsetY = Math.floor(minutesToEvent * pixelPerMinute)
+    // Calling onScroll function from Calendar.js component to scroll all scrolls to position of event with earlier start
+    this.props.onScroll(null, moveToOffsetY)
   }
 
   triggerTimeIndicatorUpdate () {
@@ -403,6 +429,8 @@ TimeGrid.propTypes = {
 }
 
 const mapStateToProps = (state) => ({
+  events: state.getIn([ 'props', 'events' ]),
+  autoScrollToFirstEvent: state.getIn([ 'props', 'autoScrollToFirstEvent' ]),
   slotDuration: getSlotDuration(state),
   slotInterval: getSlotInterval(state),
   messages: getMessages(state),
