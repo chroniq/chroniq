@@ -108,7 +108,8 @@ class Calendar extends React.PureComponent {
     'enableEventPopup',
     'hoverOnEventPopup',
     'eventPopupDirection',
-    'resourceTabsTarget'
+    'resourceTabsTarget',
+    'autoScrollToFirstEvent'
   ]
 
   dragAndDropSelector = (state, action) => {
@@ -365,13 +366,19 @@ class Calendar extends React.PureComponent {
     return VIEWS
   };
 
-  _onScroll = (event) => {
-    this.calendars.forEach((calendarRef) => {
-      if (calendarRef !== null && calendarRef !== event.target && calendarRef.scrollTop !== event.target.scrollTop) {
-        calendarRef.scrollTop = event.target.scrollTop
-      }
-    })
-    event.stopPropagation()
+  _onScroll = (event, autoScrollOffset) => {
+    // It is Autoscroll in start
+    if (autoScrollOffset > 0 && this.props.autoScrollToFirstEvent) {
+      this.calendars.forEach((calendarRef) => { calendarRef.scrollTop = autoScrollOffset })
+    // Just regular scroll 
+    } else if (event && !autoScrollOffset) {
+      this.calendars.forEach((calendarRef) => {
+        if (calendarRef !== null && calendarRef !== event.target && calendarRef.scrollTop !== event.target.scrollTop) {
+          calendarRef.scrollTop = event.target.scrollTop
+        }
+      })
+      event.stopPropagation()
+    }
   }
 
   render () {

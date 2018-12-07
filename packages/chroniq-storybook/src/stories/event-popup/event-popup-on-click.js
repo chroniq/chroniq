@@ -11,6 +11,7 @@ export default () => <EventProviderHOC>
     withDragAndDrop
     selectable
     enableEventPopup
+    autoScrollToFirstEvent
     eventPopupDirection={select('Direction', {
       detect: 'detect',
       top: 'top',
