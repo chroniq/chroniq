@@ -93,8 +93,7 @@ class TimeGrid extends React.PureComponent {
       width,
       onScroll,
       setScrollRef,
-      now,
-      showGutter
+      now
     } = this.props
 
     const {
@@ -120,29 +119,24 @@ class TimeGrid extends React.PureComponent {
           setScrollRef && setScrollRef(ref)
         }}>
           <div ref={this.setTimeIndicatorRef} className='chrnq-current-time-indicator' />
-          {
-            // Show gutter column only if it is first View box
-            showGutter && (
-              <TimeColumn
-                showLabels
-                accessors={this.props.accessors}
-                resources={this.props.resources}
-                components={this.props.components}
-                minTime={minTime}
-                maxTime={maxTime}
-                slotDuration={slotDuration}
-                slotInterval={slotInterval}
-                style={{ width }}
-                innerRef={(ref) => {
-                  gutterRef(ref)
-                  this.props.setTimeScaleRef(ref)
-                }}
-                now={now}
-                isLegend
-                className='chrnq-time-gutter'
-              />
-            )
-          }
+          <TimeColumn
+            showLabels
+            accessors={this.props.accessors}
+            resources={this.props.resources}
+            components={this.props.components}
+            minTime={minTime}
+            maxTime={maxTime}
+            slotDuration={slotDuration}
+            slotInterval={slotInterval}
+            style={{ width }}
+            innerRef={(ref) => {
+              gutterRef(ref)
+              this.props.setTimeScaleRef(ref)
+            }}
+            now={now}
+            isLegend
+            className='chrnq-time-gutter'
+          />
 
           { this.renderEvents(this.props.range, this.props.now) }
 
@@ -167,6 +161,8 @@ class TimeGrid extends React.PureComponent {
           key={key}
           layoutStrategies={this.props.layoutStrategies}
           timeContentRef={this.contentRef}
+          onScroll={this.props.onScroll}
+          scrollToEvent={this.props.scrollToEvent}
         />
       )
     })
@@ -174,7 +170,7 @@ class TimeGrid extends React.PureComponent {
 
   renderHeader (range, width) {
     const { messages, rtl } = this.props.redux
-    let { now, showGutter } = this.props
+    let { now } = this.props
     let { isOverflowing } = this.state || {}
 
     let style = {}
@@ -191,35 +187,25 @@ class TimeGrid extends React.PureComponent {
         style={style}
       >
         <div className='chrnq-row'>
-          {
-            // Show first cell of time in header (Ganztägig) only if it is first View box
-            showGutter && (
-              <div
-                className='chrnq-header'
-                style={{ width }}
-              />
-            )
-          }
+          <div
+            className='chrnq-header'
+            style={{ width }}
+          />
           { this.renderHeaderCells(range) }
         </div>
         <div className='chrnq-row'>
-          {
-            // Render gutter column with time only if it is first View box
-            showGutter && (
-              <div
-                ref={ref => {
-                  this._gutters[0] = ref
-                  this.props.setAllDayRef(ref)
-                }}
-                className='chrnq-label chrnq-header-gutter'
-                style={{ width }}
-              >
-                <span>
-                  { messages.allDay }
-                </span>
-              </div>
-            )
-          }
+          <div
+            ref={ref => {
+              this._gutters[0] = ref
+              this.props.setAllDayRef(ref)
+            }}
+            className='chrnq-label chrnq-header-gutter'
+            style={{ width }}
+          >
+            <span>
+              { messages.allDay }
+            </span>
+          </div>
           <DateContentRow
             resources={this.props.resources}
             now={now}
@@ -338,8 +324,7 @@ class TimeGrid extends React.PureComponent {
     const { 
       rtl, 
       minTime, 
-      maxTime,
-      autoScrollToFirstEvent
+      maxTime
     } = this.props.redux
     const now = new Date()
 
@@ -367,27 +352,7 @@ class TimeGrid extends React.PureComponent {
       timeIndicator.style[rtl ? 'left' : 'right'] = 0
       timeIndicator.style[rtl ? 'right' : 'left'] = offsetWidth + 'px'
       timeIndicator.style.top = offset + 'px'
-
-      // Autoscrolling to first event
-      if (!this.state.autoScrolled && timeGutter && autoScrollToFirstEvent) {
-        this.autoScroll(pixelHeight, maxTime, minTime)
-        this.setState({ autoScrolled: true })
-      }
     }
-  }
-
-  // Autoscrolling calculations
-  autoScroll = (viewHeight, maxTime, minTime) => {
-    let events = this.props.redux.events
-    // Finding an event with lower start date
-    events.sort((a, b) => new Date(a.start) - new Date(b.start))
-    const minutesToEvent= dates.diff(events[0].start, minTime, 'minutes')
-    const diffMinMax = dates.diff(maxTime, minTime, 'minutes')
-    const pixelPerMinute = viewHeight / diffMinMax
-    // Calculating amount of pixels to first event
-    const moveToOffsetY = Math.floor(minutesToEvent * pixelPerMinute)
-    // Calling onScroll function from Calendar.js component to scroll all scrolls to position of event with earlier start
-    this.props.onScroll(null, moveToOffsetY)
   }
 
   triggerTimeIndicatorUpdate () {

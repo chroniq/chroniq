@@ -47,7 +47,8 @@ class MainView extends React.PureComponent {
       layoutStrategies,
       scrollRefArray,
       showMore,
-      onScroll
+      onScroll,
+      scrollToEvent
     } = this.props
 
     const {
@@ -130,6 +131,7 @@ class MainView extends React.PureComponent {
                       layoutStrategies={layoutStrategies}
                       onShowMore={showMore}
                       onScroll={onScroll}
+                      scrollToEvent={scrollToEvent}
                       setScrollRef={this.setScrollRef(index)}
                       setTimeScaleRef={this.setTimeScaleRef}
                       setAllDayRef={this.setAllDayRef}

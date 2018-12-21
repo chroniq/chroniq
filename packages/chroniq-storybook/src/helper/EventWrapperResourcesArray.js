@@ -6,22 +6,22 @@ const events = [
     id: 1,
     resourceId: [ 1, 2, 3 ],
     title: 'Combined Event 1',
-    start: moment().toDate(),
+    start: moment().add(3, 'hour').toDate(),
     end: moment().add(2, 'hour').toDate()
   },
   {
     id: 2,
     resourceId: 2,
     title: 'Tim Event 2',
-    start: moment().toDate(),
-    end: moment().add(1, 'day').add(2, 'hour').toDate()
+    start: moment().add(3, 'hour').toDate(),
+    end: moment().add(5, 'hour').toDate()
   },
   {
     id: 3,
     resourceId: 2,
     title: 'Tim Event 3',
-    start: moment().add(1, 'day').toDate(),
-    end: moment().add(1, 'day').add(3, 'hour').toDate()
+    start: moment().add(4, 'hour').toDate(),
+    end: moment().add(5, 'hour').toDate()
   },
   {
     id: 4,
