@@ -14,4 +14,4 @@ setOptions({
   sidebarAnimations: true
 });
 
-configure(() => require('@chroniq/chroniq-storybook'), module);
+configure(() => require('../storybook'), module);
