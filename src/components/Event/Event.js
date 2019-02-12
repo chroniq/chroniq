@@ -132,7 +132,6 @@ class Event extends React.Component {
 
     const enableEventPopup = this.state.enableEventPopup
     const hoverOnEventPopup = this.state.hoverOnEventPopup
-
     return (
       <EventWrapper event={event}>
         {

@@ -3,6 +3,8 @@ import React from 'react'
 import EventPopupWrapper from './EventPopupWrapper'
 import EventPopupDefault from './EventPopupDefault'
 
+import { chooseTooltipType, calculateTooltipCoordinates } from './helpers'
+
 export default class EventPopup extends React.Component {
   constructor (props) {
     super(props)
@@ -15,7 +17,6 @@ export default class EventPopup extends React.Component {
 
     this.tooltipCoverDiv = null
     this.customViewRef = null
-    this.calculateTooltipCoordinates = this.calculateTooltipCoordinates.bind(this)
   }
 
   componentDidMount () {
@@ -26,9 +27,9 @@ export default class EventPopup extends React.Component {
     let direction = this.props.direction
     // Use default 'detect' type or not
     if (direction !== 'top' && direction !== 'right' && direction !== 'bottom' && direction !== 'left') {
-      direction = this.chooseTooltipType(this.props.timeContentCoordinates, this.props.eventCoordinates)
+      direction = chooseTooltipType(this.props.timeContentCoordinates, this.props.eventCoordinates)
     }
-    const tooltipData = this.calculateTooltipCoordinates(direction, tooltipCoverCoords, customViewCoords.width, customViewCoords.height)
+    const tooltipData = calculateTooltipCoordinates(direction, tooltipCoverCoords, customViewCoords.width, customViewCoords.height, this.props.eventCoordinates, this.props.timeContentCoordinates)
     this.setState({
       tooltipData,
       eventPopupWrapperWidth: customViewCoords.width,
@@ -141,7 +142,7 @@ export default class EventPopup extends React.Component {
     const coordinatesX = (this.state.tooltipData.x) ? this.state.tooltipData.x : 0
     const coordinatesY = (this.state.tooltipData.y) ? this.state.tooltipData.y : 0
     return (
-      <div ref={el => this.tooltipCoverDiv = el} style={{ position: 'relative', zIndex: '101' }}>
+      <div ref={el => this.tooltipCoverDiv = el} style={{ position: 'relative', zIndex: '102' }}>
         <EventPopupWrapper
           coordinatesX={coordinatesX}
           coordinatesY={coordinatesY}

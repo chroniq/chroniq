@@ -172,6 +172,7 @@ class DayColumn extends React.Component {
             eventTimeRangeStartFormat={eventTimeRangeStartFormat}
             eventTimeRangeEndFormat={eventTimeRangeEndFormat}
             accessors={accessors}
+            timeContentRef={timeContentRef}
           />
 
           <HighlightEventsContainer

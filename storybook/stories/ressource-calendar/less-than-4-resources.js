@@ -10,12 +10,13 @@ export default () => <EventProviderHOC resourceCount={2}>
     resources={[
       {
         title: 'User A',
-        id: 0,
+        id: 0
       }, {
         title: 'User B',
-        id: 1,
+        id: 1
       }
     ]}
+    autoScrollToFirstEvent
     onSelectEvent={action('event selected')}
     onEventDrop={action('event dropped')}
     onEventResize={action('event resized')}

@@ -9,6 +9,7 @@ export default () => <Chroniq
   selectable
   events={events}
   resources={resources}
+  autoScrollToFirstEvent
   onSelectEvent={action('event selected')}
   onEventDrop={action('event dropped')}
   onEventResize={action('event resized')}

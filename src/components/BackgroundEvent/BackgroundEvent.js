@@ -24,6 +24,7 @@ class BackgroundEvent extends React.Component {
 
     return event && eventColor ? eventColor : getLightenColor(0.3, resourceColor)
   }
+
   render () {
     let {
       date,
