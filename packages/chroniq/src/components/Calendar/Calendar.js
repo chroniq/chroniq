@@ -108,6 +108,8 @@ class Calendar extends React.PureComponent {
     'enableEventPopup',
     'hoverOnEventPopup',
     'eventPopupDirection',
+    'enableBackgroundEventPopup',
+    'backgroundEventPopupDirection',
     'resourceTabsTarget',
     'autoScrollToFirstEvent'
   ]

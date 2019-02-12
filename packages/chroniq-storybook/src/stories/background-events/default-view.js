@@ -26,6 +26,7 @@ const DefaultView = () =>
     events={[]}
     onSelectEvent={action('event selected')}
     date={new Date()}
+    enableBackgroundEventPopup
   />
   
 

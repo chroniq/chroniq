@@ -17,9 +17,44 @@ import { onSelectBackgroundEvent } from '../../store/actions'
 
 import SmartComponent from '@incoqnito.io/smart-component'
 
+import { createPortal } from 'react-dom'
+import BackgroundEventPopup from '../BackgroundEventPopup/BackgroundEventPopup'
+
 const checkFlatEquality = (a, b) => Object.keys(a).reduce((result, key) => a[key] === b[key] ? result : false, true)
 
 class EventComtainer extends React.Component {
+  constructor (props) {
+    super(props)
+
+    this.backgroundEventDiv = null
+  }
+
+  state = {
+    backgroundEventCoordinates: false,
+    mouseOver: false,
+    showPopup: false,
+    enableBackgroundEventPopup: (this.props.redux.enableBackgroundEventPopup) ? true : false
+  }
+
+  // Getting size of BackgroundEvent element, sending it and draw
+  onMouseEnter = () => {
+    if (this.state.enableBackgroundEventPopup) {
+      this.setState({
+        backgroundEventCoordinates: this.backgroundEventDiv.getBoundingClientRect(),
+        timeContentCoordinates: this.props.timeContentRef.getBoundingClientRect(),
+        mouseOver: true
+      })
+    }
+  }
+  // Switch off Event Tooltip when mouse poing left the Event component
+  onMouseLeave = () => {
+    if (this.state.enableBackgroundEventPopup) {
+      this.setState({
+        mouseOver: false
+      })
+    }
+  }
+
   render () {
     return (
       <div className='chrnq-background-event-container'>
@@ -41,9 +76,12 @@ class EventComtainer extends React.Component {
         backgroundEvents: layoutStrategy
       },
       components: {
-        backgroundEvent: backgroundEventComponent
+        backgroundEvent: backgroundEventComponent,
+        backgroundEventPopupView: BackgroundEventPopupView
       },
-      accessors
+      accessors,
+      backgroundEventPopupDirection,
+      timeContentRef
     } = this.props
 
     const {
@@ -73,8 +111,20 @@ class EventComtainer extends React.Component {
 
       let onClick = (e) => onSelectBackgroundEvent(event, accessors.backgroundEvent)
 
+      const enableBackgroundEventPopup = this.state.enableBackgroundEventPopup
       return (
         <Fragment key={key}>
+          {
+            (enableBackgroundEventPopup && this.state.mouseOver) && createPortal(
+              <BackgroundEventPopup
+                event={event}
+                direction={backgroundEventPopupDirection}
+                backgroundEventCoordinates={this.state.backgroundEventCoordinates}
+                timeContentCoordinates={this.state.timeContentCoordinates}
+                backgroundEventPopupView={BackgroundEventPopupView} />,
+              timeContentRef
+            )
+          }
           <BackgroundEvent
             style={style}
             accessors={accessors}
@@ -86,7 +136,10 @@ class EventComtainer extends React.Component {
           <div
             className='chrnq-background-event-clickable'
             onClick={onClick}
-            style={style} />
+            style={style}
+            onMouseEnter={this.onMouseEnter}
+            onMouseLeave={this.onMouseLeave}
+            ref={(el) => this.backgroundEventDiv = el} />
         </Fragment>
       )
     })
@@ -114,9 +167,11 @@ const makeMapStateToProps = () => {
   const mapStateToProps = (state, props) => {
     let { resources, accessors, date } = props
     let range = [ date ]
-
+    const reduxState = state.toJS().props
     return {
-      backgroundEvents: getBackgroundEventsForResourcesAndRange(state, resources, accessors, range)
+      backgroundEvents: getBackgroundEventsForResourcesAndRange(state, resources, accessors, range),
+      enableBackgroundEventPopup: reduxState.enableBackgroundEventPopup,
+      backgroundEventPopupDirection: reduxState.backgroundEventPopupDirection
     }
   }
 
