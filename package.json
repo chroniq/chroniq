@@ -44,7 +44,8 @@
 		"webpack-dev-server": "^2.4.5"
 	},
 	"scripts": {
-		"build": "rimraf lib && babel src --out-dir lib && stylus src/index.styl --out lib",
+    "build": "rimraf lib && babel src --out-dir lib && stylus src/index.styl --out lib",
+    "watch": "rimraf lib && babel src --out-dir lib -w",
 		"prepublish": "npm run build",
 		"publish:patch": "npm version patch && npm publish",
 		"publish:minor": "npm version minor && npm publish",
