@@ -21,6 +21,7 @@ class WeekView extends React.PureComponent {
         resources={this.props.resources}
         layoutStrategies={this.props.layoutStrategies}
         onScroll={this.props.onScroll}
+        scrollToEvent={this.props.scrollToEvent}
         setScrollRef={this.props.setScrollRef}
         setTimeScaleRef={this.props.setTimeScaleRef}
         setAllDayRef={this.props.setAllDayRef}
