@@ -1,6 +1,6 @@
 {
 	"name": "@chroniq/chroniq-monorepo",
-	"version": "1.0.0",
+	"version": "0.0.0",
 	"devDependencies": {
 		"@storybook/addon-actions": "^3.2.18",
 		"@storybook/addon-knobs": "^3.4.0-rc.3",
@@ -45,9 +45,9 @@
 	"scripts": {
 		"build": "rimraf lib && babel src --out-dir lib && stylus src/index.styl --out lib",
 		"prepublish": "npm run build",
-		"publish:patch": "npm run prepublish && npm version patch && npm publish",
-		"publish:minor": "npm run prepublish && npm version minor && npm publish",
-		"publish:major": "npm run prepublish && npm version major && npm publish",
+		"publish:patch": "npm version patch && npm publish",
+		"publish:minor": "npm version minor && npm publish",
+		"publish:major": "npm version major && npm publish",
 		"storybook:deploy": "storybook-to-ghpages",
 		"storybook": "start-storybook -p 9002 -c .storybook"
 	},
