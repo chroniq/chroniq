@@ -55,6 +55,9 @@ stories
   .add('multi-day',
     require('./multi-day.js').default)
 
+  .add('all-day',
+    require('./all-day.js').default)
+
   .add('on-double-click-event',
     require('./on-double-click-event.js').default)
 
