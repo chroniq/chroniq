@@ -105,7 +105,7 @@ class EventCell extends React.PureComponent {
             >
               <div className='chrnq-event-content' title={title}>
                 { Event
-                  ? <Event event={event} title={title} />
+                  ? <Event event={event} color={color} title={title} />
                   : (
                     <div className='chrnq-month-event' style={style}>
                       <span className='chrnq-month-event-title'>{ title }</span>
