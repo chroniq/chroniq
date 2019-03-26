@@ -9,5 +9,6 @@ export default () => <EventWrapperResourcesArray><Chroniq
   selectable
   withDragAndDrop
   onSelectEvent={action('onSelectEvent')}
+  autoScrollToFirstEvent
   defaultDate={new Date()}
 /></EventWrapperResourcesArray>

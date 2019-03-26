@@ -370,7 +370,12 @@ class Calendar extends React.PureComponent {
   _onScroll = (event, autoScrollOffset) => {
     // It is Autoscroll in start
     if (autoScrollOffset > 0 && this.props.autoScrollToFirstEvent) {
-      this.calendars.forEach((calendarRef) => { calendarRef.scrollTop = autoScrollOffset })
+      this.calendars.forEach((calendarRef) => {
+        if (calendarRef) {
+          // -171px is height of the panel above
+          calendarRef.scrollTop = autoScrollOffset - 171
+        }
+      })
     // Just regular scroll 
     } else if (event && !autoScrollOffset) {
       this.calendars.forEach((calendarRef) => {
@@ -389,8 +394,14 @@ class Calendar extends React.PureComponent {
       className,
       components = {},
       rtl,
-      layoutStrategies
+      layoutStrategies,
+      events
     } = this.props
+
+    let sortedByStartEvents = events
+    // Finding an event with lower start date
+    sortedByStartEvents.sort((a, b) => new Date(a.start) - new Date(b.start))
+    const scrollToEvent = sortedByStartEvents[0]
 
     const views = this.getViews()
 
@@ -421,6 +432,7 @@ class Calendar extends React.PureComponent {
               accessors={this.state.accessors}
               onShowMore={this._showMore}
               onScroll={this._onScroll}
+              scrollToEvent={scrollToEvent}
               scrollRefArray={this.calendars}
             />
           </div>

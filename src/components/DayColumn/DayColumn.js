@@ -67,7 +67,9 @@ class DayColumn extends React.Component {
       resources,
       components,
       layoutStrategies,
-      timeContentRef
+      timeContentRef,
+      onScroll,
+      scrollToEvent
     } = this.props
 
     const {
@@ -152,6 +154,8 @@ class DayColumn extends React.Component {
             eventTimeRangeEndFormat={eventTimeRangeEndFormat}
             accessors={accessors}
             timeContentRef={timeContentRef}
+            onScroll={onScroll}
+            scrollToEvent={scrollToEvent}
           />
 
           <BackgroundEventContainer

@@ -57,7 +57,9 @@ class EventContainer extends React.Component {
       eventTimeRangeStartFormat,
       eventTimeRangeEndFormat,
       accessors,
-      timeContentRef
+      timeContentRef,
+      onScroll,
+      scrollToEvent
     } = this.props
 
     let {
@@ -151,6 +153,8 @@ class EventContainer extends React.Component {
         eventOverlayComponent={EventOverlayComponent}
         eventPopupView={EventPopupView}
         timeContentRef={timeContentRef}
+        onScroll={onScroll}
+        scrollToEvent={scrollToEvent}
       />
     })
   };

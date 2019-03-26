@@ -45,7 +45,30 @@ class Event extends React.Component {
     mouseOver: false,
     showPopup: false,
     hoverOnEventPopup: !!(this.props.redux.hoverOnEventPopup),
-    enableEventPopup: !!(this.props.redux.enableEventPopup)
+    enableEventPopup: !!(this.props.redux.enableEventPopup),
+    isMounted: false
+  }
+
+  componentDidMount () {
+    if (this.props.redux.autoScrollToFirstEvent && !this.state.isMounted && (this.props.scrollToEvent.id === this.props.event.id)) {
+      this.setState({ isMounted: true })
+    }
+  }
+
+  autoScrollToFirstEvent = () => {
+    const scrollToEvent = this.props.scrollToEvent
+    const event = this.props.event
+    const eventCoordsTop = this.eventDiv.getBoundingClientRect().top
+
+    if (scrollToEvent.id === event.id && eventCoordsTop > 172) {
+      if (Array.isArray(scrollToEvent.resourceId)) {
+        if (scrollToEvent.resourceId[0] === event.resourceId) {
+          this.props.onScroll(null, this.eventDiv.getBoundingClientRect().top)
+        }
+      } else {
+        this.props.onScroll(null, this.eventDiv.getBoundingClientRect().top)
+      }
+    }
   }
 
   onBeginDrag = () => {
@@ -132,6 +155,10 @@ class Event extends React.Component {
 
     const enableEventPopup = this.state.enableEventPopup
     const hoverOnEventPopup = this.state.hoverOnEventPopup
+
+    // Call autoScrool only when Events is mounted and it is the first event
+    if (this.props.redux.autoScrollToFirstEvent && this.state.isMounted && (this.props.scrollToEvent.id === this.props.event.id)) { this.autoScrollToFirstEvent() }
+
     return (
       <EventWrapper event={event}>
         {
@@ -241,7 +268,9 @@ const makeMapStateToProps = () => {
         isDeactivated: isDeactivated(state, accessors, event),
         enableEventPopup: reduxState.enableEventPopup,
         eventPopupDirection: reduxState.eventPopupDirection,
-        hoverOnEventPopup: reduxState.hoverOnEventPopup
+        hoverOnEventPopup: reduxState.hoverOnEventPopup,
+        events: reduxState.events,
+        autoScrollToFirstEvent: reduxState.autoScrollToFirstEvent
       }
     }
   }
