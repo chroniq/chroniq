@@ -280,6 +280,6 @@ type Resource = {
 - Prop fixedMonthRow
 
 ## Credits
-[![Incoqnito logo](https://s3.eu-central-1.amazonaws.com/incoqnito-marketing/incoqnito-colored-vertical.svg)]
-[Incoqnito logo](https://www.incoqnito.io)
+![Incoqnito logo](https://s3.eu-central-1.amazonaws.com/incoqnito-marketing/incoqnito-colored-vertical.svg)
+[https://www.incoqnito.io](https://www.incoqnito.io)
 
