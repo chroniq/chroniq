@@ -281,5 +281,5 @@ type Resource = {
 
 ## Credits
 ![Incoqnito logo](https://s3.eu-central-1.amazonaws.com/incoqnito-marketing/incoqnito-colored-vertical.svg)
-[https://www.incoqnito.io](https://www.incoqnito.io)
+[https://www.incoqnito.io/](https://www.incoqnito.io/)
 
